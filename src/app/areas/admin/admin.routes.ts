@@ -9,7 +9,7 @@ export const adminRoutes: Routes = [
         component: Admin,
         children: [
             { path: 'members', component: Members },
-            { path: 'users', component: AccountRegister },
+            { path: 'account/register', component: AccountRegister },
         ]
     }
 ];
