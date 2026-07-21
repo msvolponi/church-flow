@@ -1,12 +1,21 @@
 <div class="card">
-    <div class="font-semibold text-xl mb-4">Cadastro de usuário</div>
+    <div class="font-semibold text-xl mb-4">Cadastro de usuário {{form.value.role.label}}</div>
 
     <p-fluid>
         <form class="flex flex-col gap-4" [formGroup]="form">
-            <div class="flex flex-col gap-2">
-                <label for="name">Nome *</label>
-                <input pInputText id="name" formControlName="name" type="text" />
-                <app-validator [displayError]="isValidField('name', 'required')" errorMsg="Nome é obrigatório" />
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex flex-col gap-2" style="flex: 2">
+                    <label for="name">Nome *</label>
+                    <input pInputText id="name" formControlName="name" type="text" />
+                    <app-validator [displayError]="isValidField('name', 'required')" errorMsg="Nome é obrigatório" />
+                </div>
+
+                <div class="flex flex-col gap-2" style="flex: 1">
+                    <label for="role">Perfil *</label>
+                    <p-select id="role" formControlName="role" [options]="roles" optionLabel="label" optionValue="value"
+                        class="w-full">
+                    </p-select>
+                </div>
             </div>
 
             <div class="flex flex-col gap-2">
