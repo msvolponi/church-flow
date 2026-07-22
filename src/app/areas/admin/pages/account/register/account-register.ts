@@ -65,7 +65,6 @@ export class AccountRegister {
   onRegisterSuccess(response: CreateUserResponse): void {
     this.toastMessageService.success('Usuário cadastrado com sucesso.', 'Cadastro de usuário');
     this.resetForm();
-    alert(response.id);
   }
 
   private resetForm(): void {
