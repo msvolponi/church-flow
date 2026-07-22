@@ -8,7 +8,7 @@ import { AccountLogin } from './app/shared/pages/account/login/account-login';
 import { Notfound } from './app/shared/pages/notfound/notfound';
 
 export const appRoutes: Routes = [
-    { path: '', redirectTo: 'admin', pathMatch: 'full' },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'admin', children: adminRoutes },
     { path: 'login', component: AccountLogin },
 
