@@ -34,7 +34,6 @@ export class ToastMessageService {
   }
 
   public show(message: string, summary: string, config: ToastMessageOptions) {
-    debugger;
     config.detail = message;
     config.summary = summary;
     this.service.add(config);

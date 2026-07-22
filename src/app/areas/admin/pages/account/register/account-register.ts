@@ -1,4 +1,8 @@
+import { UserService } from "@/app/core/services/user.service";
+import { CreateUserRequest } from "@/app/shared/dtos/create-user.request";
+import { CreateUserResponse } from "@/app/shared/dtos/create-user.response";
 import { RoleOptions } from "@/app/shared/enums/role";
+import { AccountMapper } from "@/app/shared/mappers/account.mapper";
 import { Validator } from "@/app/shared/pages/notfound/components/validator/validator";
 import { ValidatorService } from '@/app/shared/pages/notfound/components/validator/validator.service';
 import { ToastMessageService } from "@/app/shared/services/toast-message.service";
@@ -23,7 +27,8 @@ export class AccountRegister {
   form: FormGroup;
   roles = RoleOptions.OPTIONS;
 
-  constructor(private fb: FormBuilder, private validatorService: ValidatorService, private toastMessageService: ToastMessageService) {
+  constructor(private fb: FormBuilder, private validatorService: ValidatorService,
+    private toastMessageService: ToastMessageService, private userService: UserService) {
     this.form = fb.group({
       name: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
@@ -45,12 +50,25 @@ export class AccountRegister {
       return;
     }
 
-    this.registerForm = this.form.value;
+    const form = new AccountRegisterForm(this.form.getRawValue());
+    const request: CreateUserRequest = AccountMapper.toCreateRequest(form);
 
-    alert(this.registerForm.role)
+    this.userService.create(request).subscribe({
+      next: (response) => {
+        this.onRegisterSuccess(response);
+      },
+      error: (error) =>
+        this.toastMessageService.error(error.message, 'Erro ao cadastrar usuário')
+    });
+  }
+
+  onRegisterSuccess(response: CreateUserResponse): void {
     this.toastMessageService.success('Usuário cadastrado com sucesso.', 'Cadastro de usuário');
+    this.resetForm();
+    alert(response.id);
+  }
 
-    this.registerForm = new AccountRegisterForm();
-    this.form.reset(this.registerForm);
+  private resetForm(): void {
+    this.form.reset(new AccountRegisterForm());
   }
 }
