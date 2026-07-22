@@ -4,12 +4,13 @@ import { AppLayout } from './app/layout/component/app.layout';
 import { Dashboard } from './app/pages/dashboard/dashboard';
 import { Documentation } from './app/pages/documentation/documentation';
 import { Landing } from './app/pages/landing/landing';
+import { AccountLogin } from './app/shared/pages/account/login/account-login';
 import { Notfound } from './app/shared/pages/notfound/notfound';
 
 export const appRoutes: Routes = [
     { path: '', redirectTo: 'admin', pathMatch: 'full' },
     { path: 'admin', children: adminRoutes },
-
+    { path: 'login', component: AccountLogin },
 
     {
         path: 'sakai',
