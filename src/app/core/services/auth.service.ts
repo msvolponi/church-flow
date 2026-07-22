@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
 import { LoginRequest } from '@/app/shared/dtos/login.request';
 import { LoginResponse } from '@/app/shared/dtos/login.response';
+import { Role } from '@/app/shared/enums/role';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -24,6 +25,23 @@ export class AuthService {
 
   getTokenType(): string {
     return localStorage.getItem('auth_type') ?? sessionStorage.getItem('auth_type') ?? 'Bearer';
+  }
+
+  getRole(): Role | null {
+    const token = this.getToken();
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const payloadBase64 = token.split('.')[1] ?? '';
+      const normalizedPayload = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
+      const paddedPayload = normalizedPayload.padEnd(normalizedPayload.length + ((4 - (normalizedPayload.length % 4)) % 4), '=');
+      const payload = JSON.parse(atob(paddedPayload)) as { role?: string };
+      return (payload.role as Role) ?? null;
+    } catch {
+      return null;
+    }
   }
 
   logout(): void {
