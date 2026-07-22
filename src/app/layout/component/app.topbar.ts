@@ -1,10 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AppConfigurator } from './app.configurator';
 import { LayoutService } from '@/app/layout/service/layout.service';
+import { AuthService } from '@/app/core/services/auth.service';
+import { environment } from '@/environments/environment';
+import { Role, RoleOptions } from '@/app/shared/enums/role';
 
 @Component({
     selector: 'app-topbar',
@@ -58,6 +61,39 @@ import { LayoutService } from '@/app/layout/service/layout.service';
                 </div>
             </div>
 
+            <div *ngIf="isAuthenticated" class="relative">
+                <button
+                    type="button"
+                    class="layout-topbar-action"
+                    pStyleClass="@next"
+                    enterFromClass="hidden"
+                    enterActiveClass="animate-scalein"
+                    leaveToClass="hidden"
+                    leaveActiveClass="animate-fadeout"
+                    [hideOnOutsideClick]="true"
+                >
+                    <i class="pi pi-user"></i>
+                </button>
+                <div class="hidden absolute right-0 top-full mt-2 w-72 rounded-xl border border-surface-200 bg-surface-0 dark:border-surface-700 dark:bg-surface-900 shadow-lg z-5 p-3">
+                    <div class="rounded-lg bg-surface-50 dark:bg-surface-800/60 px-3 py-3">
+                        <div class="text-[15px] font-semibold text-surface-900 dark:text-surface-0">{{ userName }}</div>
+                        <div class="mt-1 text-[13px] text-muted-color">{{ userEmail }}</div>
+                    </div>
+                    <div class="mt-2 rounded-lg bg-surface-50 dark:bg-surface-800/60 px-3 py-3">
+                        <div class="text-[12px] uppercase font-semibold text-muted-color">Perfil</div>
+                        <div class="mt-1 text-[14px] text-surface-900 dark:text-surface-0">{{ userProfile }}</div>
+                    </div>
+                    <div class="mt-2 rounded-lg bg-surface-50 dark:bg-surface-800/60 px-3 py-3">
+                        <div class="text-[12px] uppercase font-semibold text-muted-color">Versão do sistema</div>
+                        <div class="mt-1 text-[14px] text-surface-900 dark:text-surface-0">{{ systemVersion }}</div>
+                    </div>
+                    <button type="button" class="mt-3 cursor-pointer w-full flex items-center justify-center gap-2 rounded-lg border border-red-200 px-4 py-3 text-sm font-semibold text-red-500 transition-colors hover:bg-red-50 dark:border-red-900/50 dark:hover:bg-red-950/30" (click)="logout()">
+                        <i class="pi pi-sign-out"></i>
+                        <span>Sair</span>
+                    </button>
+                </div>
+            </div>
+
             <button class="layout-topbar-menu-button layout-topbar-action" pStyleClass="@next" enterFromClass="hidden" enterActiveClass="animate-scalein" leaveToClass="hidden" leaveActiveClass="animate-fadeout" [hideOnOutsideClick]="true">
                 <i class="pi pi-ellipsis-v"></i>
             </button>
@@ -72,10 +108,6 @@ import { LayoutService } from '@/app/layout/service/layout.service';
                         <i class="pi pi-inbox"></i>
                         <span>Messages</span>
                     </button>
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-user"></i>
-                        <span>Profile</span>
-                    </button>
                 </div>
             </div>
         </div>
@@ -84,12 +116,37 @@ import { LayoutService } from '@/app/layout/service/layout.service';
 export class AppTopbar {
     items!: MenuItem[];
 
+    readonly systemVersion = environment.appVersion;
+
     layoutService = inject(LayoutService);
+    private authService = inject(AuthService);
+    private router = inject(Router);
+
+    get isAuthenticated(): boolean {
+        return !!this.authService.getToken();
+    }
+
+    get userName(): string {
+        return this.authService.getName() ?? 'Usuário';
+    }
+
+    get userEmail(): string {
+        return this.authService.getEmail() ?? 'E-mail não informado';
+    }
+
+    get userProfile(): string {
+        return RoleOptions.getLabel(this.authService.getRole() ?? Role.ADMIN);
+    }
 
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({
             ...state,
             darkTheme: !state.darkTheme
         }));
+    }
+
+    logout(): void {
+        this.authService.logout();
+        this.router.navigate(['/login']);
     }
 }

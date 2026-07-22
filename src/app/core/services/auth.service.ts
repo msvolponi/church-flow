@@ -27,7 +27,7 @@ export class AuthService {
     return localStorage.getItem('auth_type') ?? sessionStorage.getItem('auth_type') ?? 'Bearer';
   }
 
-  getRole(): Role | null {
+  getPayload(): { role?: string; name?: string; email?: string } | null {
     const token = this.getToken();
     if (!token) {
       return null;
@@ -37,11 +37,23 @@ export class AuthService {
       const payloadBase64 = token.split('.')[1] ?? '';
       const normalizedPayload = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
       const paddedPayload = normalizedPayload.padEnd(normalizedPayload.length + ((4 - (normalizedPayload.length % 4)) % 4), '=');
-      const payload = JSON.parse(atob(paddedPayload)) as { role?: string };
-      return (payload.role as Role) ?? null;
+      const payload = JSON.parse(atob(paddedPayload)) as { role?: string; name?: string; email?: string };
+      return payload;
     } catch {
       return null;
     }
+  }
+
+  getRole(): Role | null {
+    return (this.getPayload()?.role as Role) ?? null;
+  }
+
+  getName(): string | null {
+    return this.getPayload()?.name ?? null;
+  }
+
+  getEmail(): string | null {
+    return this.getPayload()?.email ?? null;
   }
 
   logout(): void {
