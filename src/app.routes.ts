@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { adminRoutes } from './app/areas/admin/admin.routes';
 import { AppLayout } from './app/layout/component/app.layout';
+import { Access } from './app/pages/auth/access';
 import { Dashboard } from './app/pages/dashboard/dashboard';
 import { Documentation } from './app/pages/documentation/documentation';
 import { Landing } from './app/pages/landing/landing';
@@ -25,5 +26,6 @@ export const appRoutes: Routes = [
     { path: 'sakai/landing', component: Landing },
     { path: 'sakai/auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
     { path: 'notfound', component: Notfound },
+    { path: 'access', component: Access },
     { path: '**', redirectTo: '/notfound' },
 ];
