@@ -1,0 +1,20 @@
+<p-toolbar class="mb-6">
+    <ng-template #start>
+
+        <p-button label="Novo" icon="pi pi-plus" severity="secondary" (click)="new()">
+        </p-button>
+
+    </ng-template>
+
+</p-toolbar>
+
+<app-account-list (edit)="onEdit($event)">
+</app-account-list>
+
+<p-dialog [(visible)]="userDialog" [modal]="true" [style]="{ width: '550px' }" [closable]="true"
+    header="Cadastro de usuário">
+
+    <app-account-register [user]="selectedUser" (save)="onSaved()">
+    </app-account-register>
+
+</p-dialog>

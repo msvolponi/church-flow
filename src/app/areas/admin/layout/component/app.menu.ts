@@ -120,7 +120,7 @@ export class AppMenu {
                     {
                         label: 'Usuários',
                         icon: 'pi pi-fw pi-user-edit',
-                        routerLink: ['/admin/account/register']
+                        routerLink: ['/admin/account/list']
                     },
                     {
                         label: 'Permissões',

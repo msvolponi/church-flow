@@ -10,7 +10,7 @@ import { Validator } from "@/app/shared/pages/notfound/components/validator/vali
 import { ValidatorService } from '@/app/shared/pages/notfound/components/validator/validator.service';
 import { ToastMessageService } from "@/app/shared/services/toast-message.service";
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from "node_modules/@angular/common/types/_module-chunk";
 import { ButtonModule } from 'primeng/button';
@@ -18,15 +18,22 @@ import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { AccountRegisterForm } from '../../../models/account-register.form';
+import { AccountUserList } from "../../../models/account-user.list";
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-account-register',
   standalone: true,
   imports: [InputTextModule, FluidModule, ButtonModule, ReactiveFormsModule, CommonModule, Validator, SelectModule],
   templateUrl: './account-register.html',
   styleUrl: './account-register.scss'
 })
-export class AccountRegister {
+export class AccountRegister implements OnChanges {
+  @Input()
+  user: AccountUserList | null = null;
+
+  @Output()
+  save = new EventEmitter<CreateUserResponse>();
+
   registerForm = new AccountRegisterForm();
   form: FormGroup;
   roles = RoleOptions.OPTIONS;
@@ -45,6 +52,20 @@ export class AccountRegister {
     this.form.addValidators(this.validatorService.matchFields('password', 'confirmPassword'));
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+
+    if (!changes['user']) {
+      return;
+    }
+
+    if (this.user == null) {
+      this.resetForm();
+      return;
+    }
+
+    this.form.patchValue(this.user);
+  }
+
   ngOnInit(): void {
     this.applySecurityRole();
   }
@@ -60,7 +81,7 @@ export class AccountRegister {
     return this.validatorService.isValidField(this.form, field, type);
   }
 
-  register(): void {
+  onSave(): void {
     if (!this.validatorService.validate(this.form)) {
       return;
     }
@@ -90,6 +111,7 @@ export class AccountRegister {
 
   private onRegisterSuccess(response: CreateUserResponse): void {
     this.toastMessageService.success('Usuário cadastrado com sucesso.', 'Cadastro de usuário');
+    this.save.emit(response);
     this.resetForm();
   }
 
