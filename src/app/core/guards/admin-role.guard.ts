@@ -3,7 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Role } from '@/app/shared/enums/role';
 
-export const adminRoleGuard: CanActivateFn = (route, state) => {
+export const roleGuard = (allowedRoles: Role[]): CanActivateFn => (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
@@ -15,7 +15,7 @@ export const adminRoleGuard: CanActivateFn = (route, state) => {
   }
 
   const userRole = authService.getRole();
-  if (userRole !== Role.ADMIN) {
+  if (!userRole || !allowedRoles.includes(userRole)) {
     return router.createUrlTree(['/access'], {
       queryParams: { returnUrl: state.url }
     });
@@ -23,3 +23,5 @@ export const adminRoleGuard: CanActivateFn = (route, state) => {
 
   return true;
 };
+
+export const adminRoleGuard: CanActivateFn = roleGuard([Role.ADMIN]);
