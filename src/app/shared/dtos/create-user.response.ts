@@ -1,7 +1,7 @@
 import { Role } from '../enums/role';
 
 export interface CreateUserResponse {
-  id: string,
+  id: number,
   email: string,
   name: string,
   password: string

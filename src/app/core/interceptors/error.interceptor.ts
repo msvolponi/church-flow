@@ -66,6 +66,10 @@ export class ErrorInterceptor implements HttpInterceptor {
                         break;
 
                     case 401:
+                        if (req.url.includes('/auth/login')) {
+                            break;
+                        }
+
                         this.authService.logout();
                         this.router.navigate(['/login']);
                         this.toastMessageService.warn(

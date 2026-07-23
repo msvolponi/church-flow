@@ -68,12 +68,13 @@ export class AccountLogin {
 
     this.authService.login(request).subscribe({
       next: response => this.onLoginSuccess(response),
-      error: (err: HttpErrorResponse) => this.onRegisterError(err)
+      error: (err: HttpErrorResponse) => this.onLoginError(err)
     });
   }
 
-  private onRegisterError(err: HttpErrorResponse): void {
+  private onLoginError(err: HttpErrorResponse): void {
     const errorResponse = err.error as ApiErrorResponse;
+    
     switch (errorResponse.type) {
       case ErrorCode.INVALID_CREDENTIALS:
       case ErrorCode.NOT_FOUND:
