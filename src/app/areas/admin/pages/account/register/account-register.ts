@@ -1,9 +1,10 @@
 import { ErrorCode } from "@/app/core/enums/error-codes";
+import { AuthService } from "@/app/core/services/auth.service";
 import { UserService } from "@/app/core/services/user.service";
 import { ApiErrorResponse } from "@/app/shared/dtos/api-error.response";
 import { CreateUserRequest } from "@/app/shared/dtos/create-user.request";
 import { CreateUserResponse } from "@/app/shared/dtos/create-user.response";
-import { RoleOptions } from "@/app/shared/enums/role";
+import { Role, RoleOptions } from "@/app/shared/enums/role";
 import { AccountMapper } from "@/app/shared/mappers/account.mapper";
 import { Validator } from "@/app/shared/pages/notfound/components/validator/validator";
 import { ValidatorService } from '@/app/shared/pages/notfound/components/validator/validator.service';
@@ -31,7 +32,7 @@ export class AccountRegister {
   roles = RoleOptions.OPTIONS;
 
   constructor(private fb: FormBuilder, private validatorService: ValidatorService,
-    private toastMessageService: ToastMessageService, private userService: UserService) {
+    private toastMessageService: ToastMessageService, private userService: UserService, private authService: AuthService) {
     this.form = fb.group({
       name: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
@@ -42,6 +43,17 @@ export class AccountRegister {
 
     this.form.patchValue(this.registerForm);
     this.form.addValidators(this.validatorService.matchFields('password', 'confirmPassword'));
+  }
+
+  ngOnInit(): void {
+    this.applySecurityRole();
+  }
+
+  private applySecurityRole() {
+    if (this.authService.getRole() != Role.ADMIN) {
+      this.roles = this.roles.filter(role => role.value !== Role.ADMIN);
+      this.form.patchValue({ role: Role.MANAGER });
+    }
   }
 
   isValidField(field: string, type: string): boolean {
@@ -83,5 +95,6 @@ export class AccountRegister {
 
   private resetForm(): void {
     this.form.reset(new AccountRegisterForm());
+    this.applySecurityRole();
   }
 }
