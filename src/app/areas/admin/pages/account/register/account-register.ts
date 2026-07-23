@@ -1,4 +1,6 @@
+import { ErrorCode } from "@/app/core/enums/error-codes";
 import { UserService } from "@/app/core/services/user.service";
+import { ApiErrorResponse } from "@/app/shared/dtos/api-error.response";
 import { CreateUserRequest } from "@/app/shared/dtos/create-user.request";
 import { CreateUserResponse } from "@/app/shared/dtos/create-user.response";
 import { RoleOptions } from "@/app/shared/enums/role";
@@ -9,6 +11,7 @@ import { ToastMessageService } from "@/app/shared/services/toast-message.service
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpErrorResponse } from "node_modules/@angular/common/types/_module-chunk";
 import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
@@ -54,15 +57,26 @@ export class AccountRegister {
     const request: CreateUserRequest = AccountMapper.toCreateRequest(form);
 
     this.userService.create(request).subscribe({
-      next: (response) => {
-        this.onRegisterSuccess(response);
-      },
-      error: (error) =>
-        this.toastMessageService.error(error.message, 'Erro ao cadastrar usuário')
+      next: (response: CreateUserResponse) => this.onRegisterSuccess(response),
+      error: (err: HttpErrorResponse) => this.onRegisterError(err)
     });
   }
 
-  onRegisterSuccess(response: CreateUserResponse): void {
+  private onRegisterError(err: HttpErrorResponse): void {
+    const errorResponse = err.error as ApiErrorResponse;
+    switch (errorResponse.type) {
+      case ErrorCode.ALREADY_USED:
+        this.toastMessageService.error('O e-mail informado já está em uso.', 'Cadastro de usuário');
+        break;
+      case ErrorCode.INVALID_VALUE:
+        this.toastMessageService.error('Os dados informados são inválidos.', 'Cadastro de usuário');
+        break;
+      default:
+        break;
+    }
+  }
+
+  private onRegisterSuccess(response: CreateUserResponse): void {
     this.toastMessageService.success('Usuário cadastrado com sucesso.', 'Cadastro de usuário');
     this.resetForm();
   }

@@ -1,5 +1,7 @@
-import { AppFloatingConfigurator } from '@/app/layout/component/app.floatingconfigurator';
+import { ErrorCode } from '@/app/core/enums/error-codes';
 import { AuthService } from '@/app/core/services/auth.service';
+import { AppFloatingConfigurator } from '@/app/layout/component/app.floatingconfigurator';
+import { ApiErrorResponse } from '@/app/shared/dtos/api-error.response';
 import { LoginRequest } from '@/app/shared/dtos/login.request';
 import { LoginResponse } from '@/app/shared/dtos/login.response';
 import { Validator } from '@/app/shared/pages/notfound/components/validator/validator';
@@ -9,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { HttpErrorResponse } from 'node_modules/@angular/common/types/_module-chunk';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FluidModule } from 'primeng/fluid';
@@ -64,9 +67,21 @@ export class AccountLogin {
     const request: LoginRequest = this.loginForm.getRawValue();
 
     this.authService.login(request).subscribe({
-      next: (response) => this.onLoginSuccess(response),
-      error: (error) => this.toastMessageService.error(error?.message ?? 'Não foi possível fazer login.', 'Erro ao entrar')
+      next: response => this.onLoginSuccess(response),
+      error: (err: HttpErrorResponse) => this.onRegisterError(err)
     });
+  }
+
+  private onRegisterError(err: HttpErrorResponse): void {
+    const errorResponse = err.error as ApiErrorResponse;
+    switch (errorResponse.type) {
+      case ErrorCode.INVALID_CREDENTIALS:
+      case ErrorCode.NOT_FOUND:
+        this.toastMessageService.error('Usuário ou senha inválidos.', 'Autenticação');
+        break;
+      default:
+        break;
+    }
   }
 
   private onLoginSuccess(response: LoginResponse): void {
