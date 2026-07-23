@@ -7,7 +7,7 @@ import {
     HttpRequest
 } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, switchMap, throwError } from 'rxjs';
 
 import { ApiErrorResponse } from '@/app/shared/dtos/api-error.response';
 import { ToastMessageService } from '@/app/shared/services/toast-message.service';
@@ -30,6 +30,31 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(
             catchError((err: HttpErrorResponse) => {
                 const error = err.error as ApiErrorResponse;
+
+                if (err.status === 401 && !req.url.includes('/auth/refresh') && !req.url.includes('/auth/login') && this.authService.hasRefreshToken()) {
+                    return this.authService.refreshSession().pipe(
+                        switchMap((response) => {
+                            this.authService.saveToken(response, this.authService.isRemembered());
+
+                            const authReq = req.clone({
+                                setHeaders: {
+                                    Authorization: `${response.type || 'Bearer'} ${response.token}`
+                                }
+                            });
+
+                            return next.handle(authReq);
+                        }),
+                        catchError(() => {
+                            this.authService.logout();
+                            this.router.navigate(['/login']);
+                            this.toastMessageService.warn(
+                                'Sua sessão expirou.',
+                                'Sessão expirada'
+                            );
+                            return throwError(() => err);
+                        })
+                    );
+                }
 
                 switch (err.status) {
 
