@@ -1,10 +1,10 @@
-import { AccountRegisterForm } from "@/app/areas/admin/models/account-register.form";
+import { AccountUserForm } from "@/app/areas/admin/models/account-user.form";
 import { CreateUserRequest } from "../dtos/create-user.request";
 import { CreateUserResponse } from "../dtos/create-user.response";
 
 export class AccountMapper {
 
-    static toCreateRequest(form: AccountRegisterForm): CreateUserRequest {
+    static toCreateRequest(form: AccountUserForm): CreateUserRequest {
         return {
             name: form.name,
             email: form.email,
@@ -13,8 +13,8 @@ export class AccountMapper {
         };
     }
 
-    static toRegisterForm(request: CreateUserRequest): AccountRegisterForm {
-        return new AccountRegisterForm({
+    static toRegisterForm(request: CreateUserRequest): AccountUserForm {
+        return new AccountUserForm({
             name: request.name,
             email: request.email,
             role: request.role

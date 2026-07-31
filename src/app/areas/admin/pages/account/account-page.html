@@ -14,7 +14,7 @@
 <p-dialog [(visible)]="userDialog" [modal]="true" [style]="{ width: '550px' }" [closable]="true"
     header="Cadastro de usuário">
 
-    <app-account-register [user]="selectedUser" (save)="onSaved()">
-    </app-account-register>
+    <app-account-form [user]="selectedUser" (save)="onSaved()">
+    </app-account-form>
 
 </p-dialog>

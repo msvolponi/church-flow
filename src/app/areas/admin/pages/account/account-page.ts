@@ -5,7 +5,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToolbarModule } from 'primeng/toolbar';
 import { AccountUserList } from '../../models/account-user.list';
 import { AccountList } from './list/account-list';
-import { AccountRegister } from './register/account-register';
+import { AccountForm } from './register/account-form';
 
 @Component({
     selector: 'app-account-page',
@@ -15,7 +15,7 @@ import { AccountRegister } from './register/account-register';
         ButtonModule,
         DialogModule,
         AccountList,
-        AccountRegister
+        AccountForm
     ],
     templateUrl: './account-page.html'
 })

@@ -17,24 +17,24 @@ import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { AccountRegisterForm } from '../../../models/account-register.form';
+import { AccountUserForm } from '../../../models/account-user.form';
 import { AccountUserList } from "../../../models/account-user.list";
 
 @Component({
-  selector: 'app-account-register',
+  selector: 'app-account-form',
   standalone: true,
   imports: [InputTextModule, FluidModule, ButtonModule, ReactiveFormsModule, CommonModule, Validator, SelectModule],
-  templateUrl: './account-register.html',
-  styleUrl: './account-register.scss'
+  templateUrl: './account-form.html',
+  styleUrl: './account-form.scss'
 })
-export class AccountRegister implements OnChanges {
+export class AccountForm implements OnChanges {
   @Input()
   user: AccountUserList | null = null;
 
   @Output()
   save = new EventEmitter<CreateUserResponse>();
 
-  registerForm = new AccountRegisterForm();
+  registerForm = new AccountUserForm();
   form: FormGroup;
   roles = RoleOptions.OPTIONS;
 
@@ -86,7 +86,7 @@ export class AccountRegister implements OnChanges {
       return;
     }
 
-    const form = new AccountRegisterForm(this.form.getRawValue());
+    const form = new AccountUserForm(this.form.getRawValue());
     const request: CreateUserRequest = AccountMapper.toCreateRequest(form);
 
     this.userService.create(request).subscribe({
@@ -116,7 +116,7 @@ export class AccountRegister implements OnChanges {
   }
 
   private resetForm(): void {
-    this.form.reset(new AccountRegisterForm());
+    this.form.reset(new AccountUserForm());
     this.applySecurityRole();
   }
 }
