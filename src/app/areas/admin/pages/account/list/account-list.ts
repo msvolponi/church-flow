@@ -3,6 +3,7 @@ import { ToastMessageService } from '@/app/shared/services/toast-message.service
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
@@ -41,6 +42,7 @@ import { AccountListModel } from '../../../models/account-list.model';
     InputIconModule,
     IconFieldModule,
     ConfirmDialogModule],
+  providers: [ConfirmationService],
   templateUrl: './account-list.html',
   styleUrl: './account-list.scss',
 })
@@ -54,7 +56,8 @@ export class AccountList implements OnInit {
 
   constructor(
     private userService: UserService,
-    private toast: ToastMessageService
+    private toastMessageService: ToastMessageService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit() {
@@ -64,7 +67,7 @@ export class AccountList implements OnInit {
   reload(): void {
     this.userService.list().subscribe({
       next: users => this.users.set(users),
-      error: () => this.toast.error(
+      error: () => this.toastMessageService.error(
         'Erro ao carregar usuários',
         'Usuários')
     });
@@ -75,11 +78,19 @@ export class AccountList implements OnInit {
   }
 
   onDelete(user: AccountListModel): void {
-    this.userService.delete(user.id).subscribe({
-      next: () => {
-        this.users.update(list =>
-          list.filter(x => x.id !== user.id)
-        );
+    this.confirmationService.confirm({
+      message: `Você tem certeza que deseja deletar '${user.name}'?`,
+      header: 'Confirmação',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => {
+        this.userService.delete(user.id).subscribe({
+          next: () => {
+            this.users.update(list => list.filter(x => x.id !== user.id));
+            this.toastMessageService.success('Usuário deletado com sucesso', 'Usuários');
+          }
+        });
       }
     });
   }
