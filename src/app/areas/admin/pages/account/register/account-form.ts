@@ -2,8 +2,8 @@ import { ErrorCode } from "@/app/core/enums/error-codes";
 import { AuthService } from "@/app/core/services/auth.service";
 import { UserService } from "@/app/core/services/user.service";
 import { ApiErrorResponse } from "@/app/shared/dtos/api-error.response";
-import { CreateUserRequest } from "@/app/shared/dtos/create-user.request";
-import { CreateUserResponse } from "@/app/shared/dtos/create-user.response";
+import { AccountRequest } from "@/app/shared/dtos/user.request";
+import { AccountResponse } from "@/app/shared/dtos/user.response";
 import { Role, RoleOptions } from "@/app/shared/enums/role";
 import { AccountMapper } from "@/app/shared/mappers/account.mapper";
 import { Validator } from "@/app/shared/pages/notfound/components/validator/validator";
@@ -32,15 +32,19 @@ export class AccountForm implements OnChanges {
   user: AccountUserList | null = null;
 
   @Output()
-  save = new EventEmitter<CreateUserResponse>();
+  save = new EventEmitter<AccountResponse>();
 
   registerForm = new AccountUserForm();
   form: FormGroup;
   roles = RoleOptions.OPTIONS;
+  private matchPasswordValidator;
 
   constructor(private fb: FormBuilder, private validatorService: ValidatorService,
     private toastMessageService: ToastMessageService, private userService: UserService, private authService: AuthService) {
+
+    debugger;
     this.form = fb.group({
+      id: [null],
       name: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
       password: [null, Validators.required],
@@ -48,11 +52,12 @@ export class AccountForm implements OnChanges {
       role: [null, Validators.required]
     });
 
+    this.matchPasswordValidator = this.validatorService.matchFields('password', 'confirmPassword');
     this.form.patchValue(this.registerForm);
-    this.form.addValidators(this.validatorService.matchFields('password', 'confirmPassword'));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    debugger;
 
     if (!changes['user']) {
       return;
@@ -60,9 +65,12 @@ export class AccountForm implements OnChanges {
 
     if (this.user == null) {
       this.resetForm();
+      this.enablePasswordValidation();
       return;
     }
 
+
+    this.disablePasswordValidation();
     this.form.patchValue(this.user);
   }
 
@@ -82,20 +90,29 @@ export class AccountForm implements OnChanges {
   }
 
   onSave(): void {
+    debugger;
     if (!this.validatorService.validate(this.form)) {
       return;
     }
 
     const form = new AccountUserForm(this.form.getRawValue());
-    const request: CreateUserRequest = AccountMapper.toCreateRequest(form);
+    const request: AccountRequest = AccountMapper.toRequest(form);
 
-    this.userService.create(request).subscribe({
-      next: (response: CreateUserResponse) => this.onRegisterSuccess(response),
-      error: (err: HttpErrorResponse) => this.onRegisterError(err)
-    });
+    if (this.user) {
+      this.userService.update(request).subscribe({
+        next: (response: AccountResponse) => this.onSaveSuccess(response),
+        error: (err: HttpErrorResponse) => this.onSaveError(err)
+      });
+    } else {
+      this.userService.create(request).subscribe({
+        next: (response: AccountResponse) => this.onSaveSuccess(response),
+        error: (err: HttpErrorResponse) => this.onSaveError(err)
+      });
+    }
+
   }
 
-  private onRegisterError(err: HttpErrorResponse): void {
+  private onSaveError(err: HttpErrorResponse): void {
     const errorResponse = err.error as ApiErrorResponse;
     switch (errorResponse.type) {
       case ErrorCode.ALREADY_USED:
@@ -104,13 +121,21 @@ export class AccountForm implements OnChanges {
       case ErrorCode.INVALID_VALUE:
         this.toastMessageService.error('Os dados informados são inválidos.', 'Cadastro de usuário');
         break;
+      case ErrorCode.NOT_FOUND:
+        this.toastMessageService.error('O usuário informado não foi encontrado.', 'Cadastro de usuário');
+        break;
       default:
         break;
     }
   }
 
-  private onRegisterSuccess(response: CreateUserResponse): void {
-    this.toastMessageService.success('Usuário cadastrado com sucesso.', 'Cadastro de usuário');
+  private onSaveSuccess(response: AccountResponse): void {
+    if (this.user) {
+      this.toastMessageService.success('Usuário atualizado com sucesso.', 'Atualização de usuário');
+    } else {
+      this.toastMessageService.success('Usuário cadastrado com sucesso.', 'Cadastro de usuário');
+    }
+
     this.save.emit(response);
     this.resetForm();
   }
@@ -118,5 +143,25 @@ export class AccountForm implements OnChanges {
   private resetForm(): void {
     this.form.reset(new AccountUserForm());
     this.applySecurityRole();
+  }
+
+  private enablePasswordValidation(): void {
+    this.form.get('password')?.setValidators([Validators.required]);
+    this.form.get('confirmPassword')?.setValidators([Validators.required]);
+
+    this.form.addValidators(this.matchPasswordValidator);
+
+    this.form.get('password')?.updateValueAndValidity();
+    this.form.get('confirmPassword')?.updateValueAndValidity();
+    this.form.updateValueAndValidity();
+  }
+
+  private disablePasswordValidation(): void {
+    this.form.get('password')?.clearValidators();
+    this.form.get('confirmPassword')?.clearValidators();
+
+    this.form.get('password')?.updateValueAndValidity();
+    this.form.get('confirmPassword')?.updateValueAndValidity();
+    this.form.updateValueAndValidity();
   }
 }

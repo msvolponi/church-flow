@@ -23,16 +23,17 @@
                 <app-validator [displayError]="isValidField('email', 'email')" errorMsg="E-mail não é válido" />
             </div>
 
+
             <div class="flex flex-col md:flex-row gap-4">
                 <div class="flex flex-col gap-2 w-full">
-                    <label for="password">Senha *</label>
+                    <label for="password">Senha @if (user === null) { * } </label>
                     <input pInputText id="password" formControlName="password" type="password" />
                     <app-validator [displayError]="isValidField('password', 'required')"
                         errorMsg="Senha é obrigatório" />
                 </div>
 
                 <div class="flex flex-col gap-2 w-full">
-                    <label for="confirmPassword">Confirmar senha *</label>
+                    <label for="confirmPassword">Confirmar senha @if (user === null) { * } </label>
                     <input pInputText id="confirmPassword" formControlName="confirmPassword" type="password" />
                     <app-validator [displayError]="isValidField('confirmPassword', 'required')"
                         errorMsg="Confirmar senha é obrigatório" />
@@ -41,9 +42,10 @@
                 </div>
             </div>
 
+
             <div class="flex justify-end">
                 <div class="flex justify-end gap-2">
-                     <button pButton label="Salvar" type="button" (click)="onSave()">
+                    <button pButton label="Salvar" type="button" (click)="onSave()">
                     </button>
 
                 </div>

@@ -1,23 +1,15 @@
-import { AccountUserForm } from "@/app/areas/admin/models/account-user.form";
-import { CreateUserRequest } from "../dtos/create-user.request";
-import { CreateUserResponse } from "../dtos/create-user.response";
+import { AccountUserForm as AccountForm } from "@/app/areas/admin/models/account-user.form";
+import { AccountRequest as AccountRequest } from "../dtos/user.request";
 
 export class AccountMapper {
 
-    static toCreateRequest(form: AccountUserForm): CreateUserRequest {
+    static toRequest(form: AccountForm): AccountRequest {
         return {
+            id: form.id ?? undefined,
             name: form.name,
             email: form.email,
             password: form.password,
             role: form.role,
         };
-    }
-
-    static toRegisterForm(request: CreateUserRequest): AccountUserForm {
-        return new AccountUserForm({
-            name: request.name,
-            email: request.email,
-            role: request.role
-        });
     }
 }

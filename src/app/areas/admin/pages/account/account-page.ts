@@ -28,24 +28,21 @@ export class AccountPage {
 
     selectedUser: AccountUserList | null = null;
 
-    new(): void {
+    onCreate(): void {
 
         this.selectedUser = null;
-
         this.userDialog = true;
     }
 
     onEdit(user: AccountUserList): void {
 
         this.selectedUser = user;
-
         this.userDialog = true;
     }
 
     onSaved(): void {
 
         this.userDialog = false;
-
         this.accountList.reload();
     }
 

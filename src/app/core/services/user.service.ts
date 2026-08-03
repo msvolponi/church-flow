@@ -1,6 +1,6 @@
 import { AccountUserList } from "@/app/areas/admin/models/account-user.list";
-import { CreateUserRequest } from "@/app/shared/dtos/create-user.request";
-import { CreateUserResponse } from "@/app/shared/dtos/create-user.response";
+import { AccountRequest } from "@/app/shared/dtos/user.request";
+import { AccountResponse } from "@/app/shared/dtos/user.response";
 import { Injectable } from "@angular/core";
 import { Observable, map } from "rxjs";
 import { ApiResponse } from "../models/api-response";
@@ -27,9 +27,15 @@ export class UserService {
         return this.api.delete<void>(`users/${id}`);
     }
 
-    create(request: CreateUserRequest): Observable<CreateUserResponse> {
+    create(request: AccountRequest): Observable<AccountResponse> {
         return this.api
-            .post<ApiResponse<CreateUserResponse>, CreateUserRequest>('users', request)
+            .post<ApiResponse<AccountResponse>, AccountRequest>('users', request)
+            .pipe(map(response => response.data));
+    }
+
+    update(request: AccountRequest): Observable<AccountResponse> {
+        return this.api
+            .put<ApiResponse<AccountResponse>, AccountRequest>('users', request)
             .pipe(map(response => response.data));
     }
 }

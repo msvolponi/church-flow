@@ -2,7 +2,7 @@ import { Role } from '@/app/shared/enums/role';
 
 export class AccountUserForm {
 
-    id: number | null = null;
+    id: number | undefined = undefined;
     name: string = '';
     email: string = '';
     password: string = '';
