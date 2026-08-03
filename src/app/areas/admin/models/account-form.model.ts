@@ -1,6 +1,6 @@
 import { Role } from '@/app/shared/enums/role';
 
-export class AccountUserForm {
+export class AccountFormModel {
 
     id: number | undefined = undefined;
     name: string = '';
@@ -9,7 +9,7 @@ export class AccountUserForm {
     confirmPassword: string = '';
     role: Role = Role.ADMIN;
 
-    constructor(init?: Partial<AccountUserForm>) {
+    constructor(init?: Partial<AccountFormModel>) {
         Object.assign(this, init);
     }
 }

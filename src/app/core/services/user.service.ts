@@ -1,4 +1,4 @@
-import { AccountUserList } from "@/app/areas/admin/models/account-user.list";
+import { AccountListModel } from "@/app/areas/admin/models/account-list.model";
 import { AccountRequest } from "@/app/shared/dtos/user.request";
 import { AccountResponse } from "@/app/shared/dtos/user.response";
 import { Injectable } from "@angular/core";
@@ -11,9 +11,9 @@ export class UserService {
 
     constructor(private api: ApiService) { }
 
-    list(): Observable<AccountUserList[]> {
+    list(): Observable<AccountListModel[]> {
         return this.api
-            .get<ApiResponse<AccountUserList[]>>('users')
+            .get<ApiResponse<AccountListModel[]>>('users')
             .pipe(map(response => response.data));
     }
 

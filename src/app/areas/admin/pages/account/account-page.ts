@@ -3,7 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ToolbarModule } from 'primeng/toolbar';
-import { AccountUserList } from '../../models/account-user.list';
+import { AccountListModel } from '../../models/account-list.model';
 import { AccountList } from './list/account-list';
 import { AccountForm } from './register/account-form';
 
@@ -26,7 +26,7 @@ export class AccountPage {
 
     userDialog = false;
 
-    selectedUser: AccountUserList | null = null;
+    selectedUser: AccountListModel | null = null;
 
     onCreate(): void {
 
@@ -34,7 +34,7 @@ export class AccountPage {
         this.userDialog = true;
     }
 
-    onEdit(user: AccountUserList): void {
+    onEdit(user: AccountListModel): void {
 
         this.selectedUser = user;
         this.userDialog = true;

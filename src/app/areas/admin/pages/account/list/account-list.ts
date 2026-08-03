@@ -19,7 +19,7 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { AccountUserList } from '../../../models/account-user.list';
+import { AccountListModel } from '../../../models/account-list.model';
 
 @Component({
   selector: 'app-account-list',
@@ -47,10 +47,10 @@ import { AccountUserList } from '../../../models/account-user.list';
 
 export class AccountList implements OnInit {
 
-  users = signal<AccountUserList[]>([]);
+  users = signal<AccountListModel[]>([]);
 
   @Output()
-  edit = new EventEmitter<AccountUserList>();
+  edit = new EventEmitter<AccountListModel>();
 
   constructor(
     private userService: UserService,
@@ -70,11 +70,11 @@ export class AccountList implements OnInit {
     });
   }
 
-  onEdit(user: AccountUserList): void {
+  onEdit(user: AccountListModel): void {
     this.edit.emit(user);
   }
 
-  onDelete(user: AccountUserList): void {
+  onDelete(user: AccountListModel): void {
     this.userService.delete(user.id).subscribe({
       next: () => {
         this.users.update(list =>
