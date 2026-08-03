@@ -56,8 +56,6 @@ export class ErrorInterceptor implements HttpInterceptor {
                     );
                 }
 
-                debugger;
-
                 switch (err.status) {
 
                     case 0:

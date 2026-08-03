@@ -42,7 +42,6 @@ export class AccountForm implements OnChanges {
   constructor(private fb: FormBuilder, private validatorService: ValidatorService,
     private toastMessageService: ToastMessageService, private userService: UserService, private authService: AuthService) {
 
-    debugger;
     this.form = fb.group({
       id: [null],
       name: [null, Validators.required],
@@ -57,7 +56,6 @@ export class AccountForm implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    debugger;
 
     if (!changes['user']) {
       return;
@@ -90,7 +88,6 @@ export class AccountForm implements OnChanges {
   }
 
   onSave(): void {
-    debugger;
     if (!this.validatorService.validate(this.form)) {
       return;
     }
