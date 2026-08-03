@@ -122,6 +122,7 @@ export class AccountForm implements OnChanges {
         this.toastMessageService.error('O usuário informado não foi encontrado.', 'Cadastro de usuário');
         break;
       default:
+        this.toastMessageService.error('Ocorreu um erro ao salvar o usuário.', 'Cadastro de usuário');
         break;
     }
   }
