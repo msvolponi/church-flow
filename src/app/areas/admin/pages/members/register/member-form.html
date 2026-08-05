@@ -1,0 +1,124 @@
+<form class="form-shell" [formGroup]="form">
+    <p-fluid>
+        <div class="grid gap-4 md:grid-cols-2">
+
+            <div class="md:col-span-2">
+                <label for="fullName">
+                    Nome Completo <span class="text-red-500">*</span>
+                </label>
+                <input pInputText id="fullName" formControlName="fullName" [maxLength]="255" />
+                <app-validator [displayError]="isValidField('fullName', 'required')"
+                    errorMsg="Nome completo é obrigatório" />
+            </div>
+
+            <div>
+                <label for="memberType">Tipo</label>
+                <p-select id="memberType" formControlName="memberType" [options]="memberTypes" optionLabel="label"
+                    optionValue="value" class="w-full">
+                </p-select>
+            </div>
+
+            <div>
+                <label for="gender">Sexo</label>
+                <p-select id="gender" formControlName="gender" [options]="genders" optionLabel="label"
+                    optionValue="value" class="w-full">
+                </p-select>
+            </div>
+
+            <div>
+                <label for="birthDate">Data de Nascimento</label>
+                <input pInputText id="birthDate" formControlName="birthDate" type="date" />
+            </div>
+
+            <div>
+                <label for="maritalStatus">Estado Civil</label>
+                <p-select id="maritalStatus" formControlName="maritalStatus" [options]="maritalStatuses"
+                    optionLabel="label" optionValue="value" class="w-full">
+                </p-select>
+            </div>
+
+            <div>
+                <label for="cellphone">Celular</label>
+                <p-inputMask id="cellphone" formControlName="cellphone" mask="(99) 99999-9999" styleClass="w-full">
+                </p-inputMask>
+            </div>
+
+            <div>
+                <label for="email">E-mail</label>
+                <input pInputText id="email" formControlName="email" type="email" [maxLength]="255" />
+                <app-validator [displayError]="isValidField('email', 'email')" errorMsg="E-mail não é válido" />
+            </div>
+
+            <div>
+                <label for="zipCode">CEP</label>
+                <p-inputMask id="zipCode" formControlName="zipCode" mask="99999-999" styleClass="w-full">
+                </p-inputMask>
+            </div>
+
+            <div>
+                <label for="street">Rua</label>
+                <input pInputText id="street" formControlName="street" [maxLength]="255" />
+            </div>
+
+            <div>
+                <label for="number">Número</label>
+                <input pInputText id="number" formControlName="number" [maxLength]="20" />
+            </div>
+
+            <div>
+                <label for="complement">Complemento</label>
+                <input pInputText id="complement" formControlName="complement" [maxLength]="255" />
+            </div>
+
+            <div>
+                <label for="neighborhood">Bairro</label>
+                <input pInputText id="neighborhood" formControlName="neighborhood" [maxLength]="255" />
+            </div>
+
+            <div>
+                <label for="city">Cidade</label>
+                <input pInputText id="city" formControlName="city" [maxLength]="255" />
+            </div>
+
+            <div>
+                <label for="state">Estado</label>
+                <input pInputText id="state" formControlName="state" [maxLength]="2" />
+            </div>
+
+            <div>
+                <label for="phone">Telefone</label>
+                <p-inputMask id="phone" formControlName="phone" mask="(99) 9999-9999" styleClass="w-full">
+                </p-inputMask>
+            </div>
+
+            <div>
+                <label for="memberSince">Membro Desde</label>
+                <input pInputText id="memberSince" formControlName="memberSince" type="date" />
+            </div>
+
+            <div>
+                <label for="baptizedInWater">Batizado nas Águas</label>
+                <p-select id="baptizedInWater" formControlName="baptizedInWater" [options]="baptizedOptions"
+                    optionLabel="label" optionValue="value" class="w-full">
+                </p-select>
+            </div>
+
+            <div>
+                <label for="profession">Profissão</label>
+                <input pInputText id="profession" formControlName="profession" [maxLength]="255" />
+            </div>
+
+            <div class="md:col-span-2">
+                <label for="observations">Observações</label>
+                <textarea pTextarea id="observations" formControlName="observations" rows="3" [maxLength]="1000">
+                </textarea>
+            </div>
+
+        </div>
+    </p-fluid>
+
+    <div class="flex justify-end gap-2 mt-4">
+        <button pButton label="Salvar" type="button" (click)="onSubmit()">
+        </button>
+    </div>
+</form>

@@ -6,8 +6,8 @@ import { AccountRequest } from "@/app/shared/dtos/user.request";
 import { AccountResponse } from "@/app/shared/dtos/user.response";
 import { Role, RoleOptions } from "@/app/shared/enums/role";
 import { AccountMapper } from "@/app/shared/mappers/account.mapper";
-import { Validator } from "@/app/shared/pages/notfound/components/validator/validator";
-import { ValidatorService } from '@/app/shared/pages/notfound/components/validator/validator.service';
+import { Validator } from "@/app/shared/pages/components/validator/validator";
+import { ValidatorService } from '@/app/shared/pages/components/validator/validator.service';
 import { ToastMessageService } from "@/app/shared/services/toast-message.service";
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
@@ -19,11 +19,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { AccountFormModel } from '../../../models/account-form.model';
 import { AccountListModel } from "../../../models/account-list.model";
+import { FieldsetModule } from "primeng/fieldset";
 
 @Component({
   selector: 'app-account-form',
   standalone: true,
-  imports: [InputTextModule, FluidModule, ButtonModule, ReactiveFormsModule, CommonModule, Validator, SelectModule],
+  imports: [InputTextModule, FluidModule, ButtonModule, ReactiveFormsModule, Validator, SelectModule, FieldsetModule],
   templateUrl: './account-form.html',
   styleUrl: './account-form.scss'
 })

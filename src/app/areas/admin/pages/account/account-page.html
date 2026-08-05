@@ -11,10 +11,10 @@
 <app-account-list (edit)="onEdit($event)">
 </app-account-list>
 
-<p-dialog [(visible)]="userDialog" [modal]="true" [style]="{ width: '550px' }" [closable]="true"
+<p-dialog [(visible)]="dialog" [modal]="true" [style]="{ width: '550px' }" [closable]="true"
     header="Cadastro de usuário">
 
-    <app-account-form [user]="selectedUser" (save)="onSaved()">
+    <app-account-form [user]="selected" (save)="onSaved()">
     </app-account-form>
 
 </p-dialog>

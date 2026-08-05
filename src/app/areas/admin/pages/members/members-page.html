@@ -1,0 +1,17 @@
+<p-toolbar class="mb-6">
+    <ng-template #start>
+
+        <p-button label="Novo" icon="pi pi-plus" severity="secondary" (click)="onCreate()">
+        </p-button>
+
+    </ng-template>
+
+</p-toolbar>
+
+<app-member-list (edit)="onEdit($event)">
+</app-member-list>
+
+<p-dialog [(visible)]="dialog" [modal]="true" [style]="{ width: '740px' }" [closable]="true"
+    header="Cadastro de membro">
+    <app-member-form [member]="selected" (save)="onSaved()"></app-member-form>
+</p-dialog>

@@ -1,56 +1,52 @@
-<div class="card">
+<form class="form-shell" [formGroup]="form">
     <p-fluid>
-        <form class="flex flex-col gap-4" [formGroup]="form">
-            <div class="flex flex-col md:flex-row gap-4">
-                <div class="flex flex-col gap-2" style="flex: 2">
-                    <label for="name">Nome *</label>
-                    <input pInputText id="name" formControlName="name" type="text" [maxLength]="255" />
-                    <app-validator [displayError]="isValidField('name', 'required')" errorMsg="Nome é obrigatório" />
-                </div>
-
-                <div class="flex flex-col gap-2" style="flex: 1">
-                    <label for="role">Perfil *</label>
-                    <p-select id="role" formControlName="role" [options]="roles" optionLabel="label" optionValue="value"
-                        class="w-full">
-                    </p-select>
-                </div>
+        <div class="grid gap-4 md:grid-cols-2">
+            <div class="md:col-span-2">
+                <label for="name">Nome Completo <span class="text-red-500">*</span></label>
+                <input pInputText id="name" formControlName="name" type="text" [maxLength]="255" />
+                <app-validator [displayError]="isValidField('name', 'required')"
+                    errorMsg="Nome completo é obrigatório" />
             </div>
 
-            <div class="flex flex-col gap-2">
-                <label for="email">E-mail *</label>
+
+            <div>
+                <label for="role">Perfil <span class="text-red-500">*</span></label>
+                <p-select id="role" formControlName="role" [options]="roles" optionLabel="label" optionValue="value"
+                    class="w-full">
+                </p-select>
+            </div>
+
+            <div>
+                <label for="email">E-mail <span class="text-red-500">*</span></label>
                 <input pInputText id="email" formControlName="email" type="email" [maxLength]="255" />
                 <app-validator [displayError]="isValidField('email', 'required')" errorMsg="E-mail é obrigatório" />
                 <app-validator [displayError]="isValidField('email', 'email')" errorMsg="E-mail não é válido" />
             </div>
 
-
-            <div class="flex flex-col md:flex-row gap-4">
-                <div class="flex flex-col gap-2 w-full">
-                    <label for="password">Senha @if (user === null) { * } </label>
-                    <input pInputText id="password" formControlName="password" type="password" [maxLength]="255" />
-                    <app-validator [displayError]="isValidField('password', 'required')"
-                        errorMsg="Senha é obrigatório" />
-                </div>
-
-                <div class="flex flex-col gap-2 w-full">
-                    <label for="confirmPassword">Confirmar senha @if (user === null) { * } </label>
-                    <input pInputText id="confirmPassword" formControlName="confirmPassword" type="password"
-                        [maxLength]="255" />
-                    <app-validator [displayError]="isValidField('confirmPassword', 'required')"
-                        errorMsg="Confirmar senha é obrigatório" />
-                    <app-validator [displayError]="isValidField('confirmPassword', 'mustMatch')"
-                        errorMsg="As senhas não coincidem" />
-                </div>
+            <div>
+                <label for="password">Senha @if (user === null) { <span class="text-red-500">*</span> } </label>
+                <input pInputText id="password" formControlName="password" type="password" [maxLength]="255" />
+                <app-validator [displayError]="isValidField('password', 'required')" errorMsg="Senha é obrigatório" />
             </div>
 
-
-            <div class="flex justify-end">
-                <div class="flex justify-end gap-2">
-                    <button pButton label="Salvar" type="button" (click)="onSave()">
-                    </button>
-
-                </div>
+            <div>
+                <label for="confirmPassword">Confirmar senha @if (user === null) { <span class="text-red-500">*</span> }
+                </label>
+                <input pInputText id="confirmPassword" formControlName="confirmPassword" type="password"
+                    [maxLength]="255" />
+                <app-validator [displayError]="isValidField('confirmPassword', 'required')"
+                    errorMsg="Confirmar senha é obrigatório" />
+                <app-validator [displayError]="isValidField('confirmPassword', 'mustMatch')"
+                    errorMsg="As senhas não coincidem" />
             </div>
-        </form>
+        </div>
+
     </p-fluid>
-</div>
+
+    <div class="flex justify-end gap-2 mt-4">
+        <button pButton label="Salvar" type="button" (click)="onSave()">
+        </button>
+
+    </div>
+
+</form>

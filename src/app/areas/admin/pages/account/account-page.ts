@@ -24,25 +24,25 @@ export class AccountPage {
     @ViewChild(AccountList)
     private accountList!: AccountList;
 
-    userDialog = false;
+    dialog = false;
 
-    selectedUser: AccountListModel | null = null;
+    selected: AccountListModel | null = null;
 
     onCreate(): void {
 
-        this.selectedUser = null;
-        this.userDialog = true;
+        this.selected = null;
+        this.dialog = true;
     }
 
     onEdit(user: AccountListModel): void {
 
-        this.selectedUser = user;
-        this.userDialog = true;
+        this.selected = user;
+        this.dialog = true;
     }
 
     onSaved(): void {
 
-        this.userDialog = false;
+        this.dialog = false;
         this.accountList.reload();
     }
 

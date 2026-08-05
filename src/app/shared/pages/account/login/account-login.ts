@@ -4,8 +4,8 @@ import { AppFloatingConfigurator } from '@/app/layout/component/app.floatingconf
 import { ApiErrorResponse } from '@/app/shared/dtos/api-error.response';
 import { LoginRequest } from '@/app/shared/dtos/login.request';
 import { LoginResponse } from '@/app/shared/dtos/login.response';
-import { Validator } from '@/app/shared/pages/notfound/components/validator/validator';
-import { ValidatorService } from '@/app/shared/pages/notfound/components/validator/validator.service';
+import { Validator } from '@/app/shared/pages/components/validator/validator';
+import { ValidatorService } from '@/app/shared/pages/components/validator/validator.service';
 import { ToastMessageService } from '@/app/shared/services/toast-message.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
