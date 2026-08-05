@@ -13,19 +13,19 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
-import { MemberFormModel } from '../../../models/member-form.model';
-import { MemberListModel } from '../../../models/member-list.model';
+import { PersonFormModel } from '../../../models/person-form.model';
+import { PersonListModel } from '../../../models/person-list.model';
 
 @Component({
-  selector: 'app-member-form',
+  selector: 'app-person-form',
   standalone: true,
   imports: [ReactiveFormsModule, InputTextModule, SelectModule, TextareaModule, ButtonModule, FieldsetModule, FluidModule, InputMaskModule, Validator],
-  templateUrl: './member-form.html',
-  styleUrl: './member-form.scss',
+  templateUrl: './person-form.html',
+  styleUrl: './person-form.scss',
 })
-export class MemberForm {
+export class PersonForm {
   @Input()
-  member: MemberListModel | null = null;
+  person: PersonListModel | null = null;
 
   @Output()
   save = new EventEmitter<void>();
@@ -35,7 +35,7 @@ export class MemberForm {
   maritalStatuses = MaritalStatusOptions.OPTIONS;
   baptizedOptions = BaptismStatusOptions.OPTIONS;
 
-  registerForm = new MemberFormModel();
+  registerForm = new PersonFormModel();
   form: FormGroup;
 
   constructor(private fb: FormBuilder, private validatorService: ValidatorService) {
@@ -66,21 +66,21 @@ export class MemberForm {
 
   ngOnChanges(changes: SimpleChanges): void {
 
-    if (!changes['member']) {
+    if (!changes['person']) {
       return;
     }
 
-    if (this.member == null) {
+    if (this.person == null) {
       this.resetForm();
       return;
     }
 
-    this.form.patchValue(this.member);
+    this.form.patchValue(this.person);
   }
 
 
   private resetForm(): void {
-    this.form.reset(new MemberFormModel());
+    this.form.reset(new PersonFormModel());
   }
 
   onSubmit(): void {
@@ -89,7 +89,7 @@ export class MemberForm {
       return;
     }
 
-    const form = new MemberFormModel(this.form.getRawValue());
+    const form = new PersonFormModel(this.form.getRawValue());
     console.log(form);
     this.save.emit();
   }

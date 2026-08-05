@@ -41,17 +41,17 @@ export class AppMenu {
                     {
                         label: 'Membros',
                         icon: 'pi pi-fw pi-users',
-                        routerLink: ['/members']
+                        routerLink: ['/pessoa/list']
                     },
                     {
                         label: 'Novo membro',
                         icon: 'pi pi-fw pi-user-plus',
-                        routerLink: ['/members/new']
+                        routerLink: ['/pessoa/new']
                     },
                     {
                         label: 'Aniversariantes',
                         icon: 'pi pi-fw pi-calendar',
-                        routerLink: ['/members/birthdays']
+                        routerLink: ['/pessoa/birthdays']
                     }
                 ]
             },

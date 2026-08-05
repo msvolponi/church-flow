@@ -38,19 +38,19 @@ export class AppMenu {
                 label: 'Pessoas',
                 items: [
                     {
-                        label: 'Membros',
+                        label: 'Pessoas',
                         icon: 'pi pi-fw pi-users',
-                        routerLink: ['/admin/members']
+                        routerLink: ['/admin/person/list']
                     },
                     {
                         label: 'Novo membro',
                         icon: 'pi pi-fw pi-user-plus',
-                        routerLink: ['/admin/members/new']
+                        routerLink: ['/admin/person/new']
                     },
                     {
                         label: 'Aniversariantes',
                         icon: 'pi pi-fw pi-calendar',
-                        routerLink: ['/admin/members/birthdays']
+                        routerLink: ['/admin/person/birthdays']
                     }
                 ]
             },

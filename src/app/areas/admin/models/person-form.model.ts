@@ -3,7 +3,7 @@ import { Gender } from '@/app/shared/enums/gender';
 import { MaritalStatus } from '@/app/shared/enums/marital-status';
 import { MemberType } from '@/app/shared/enums/member-type';
 
-export class MemberFormModel {
+export class PersonFormModel {
     id: number | undefined = undefined;
     fullName: string = '';
     memberType: MemberType = MemberType.VISITOR;
@@ -25,7 +25,7 @@ export class MemberFormModel {
     profession: string = '';
     observations: string = '';
 
-    constructor(init?: Partial<MemberFormModel>) {
+    constructor(init?: Partial<PersonFormModel>) {
         Object.assign(this, init);
     }
 }

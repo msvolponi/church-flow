@@ -1,6 +1,6 @@
 <div class="card">
 
-    <p-table #dt [value]="members()" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="people()" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
         currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} membros" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 20, 30]">
 
@@ -32,36 +32,36 @@
             </tr>
         </ng-template>
 
-        <ng-template pTemplate="body" let-member>
+        <ng-template pTemplate="body" let-person>
             <tr>
 
                 <!-- Nome + Mobile -->
                 <td>
                     <!-- Desktop -->
                     <div class="hidden md:block">
-                        {{ member.fullName }}
+                        {{ person.fullName }}
                     </div>
 
                     <!-- Mobile -->
                     <div class="md:hidden">
                         <div class="font-bold">
-                            {{ member.fullName }}
+                            {{ person.fullName }}
                         </div>
 
                         <div>
-                            {{ member.email }}
+                            {{ person.email }}
                         </div>
 
                         <div class="text-sm">
-                            {{ member.memberType }}
+                            {{ person.memberType }}
                         </div>
 
                         <div class="flex gap-2 mt-1 justify-end">
-                            <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (click)="onEdit(member)">
+                            <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (click)="onEdit(person)">
                             </p-button>
 
                             <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                                (click)="onDelete(member)">
+                                (click)="onDelete(person)">
                             </p-button>
                         </div>
                     </div>
@@ -69,20 +69,20 @@
 
                 <!-- Desktop -->
                 <td class="hidden md:table-cell">
-                    {{ member.email }}
+                    {{ person.email }}
                 </td>
 
                 <td class="hidden md:table-cell">
-                    {{ member.memberType }}
+                    {{ person.memberType }}
                 </td>
 
                 <td class="hidden md:table-cell">
                     <div class="flex justify-end gap-2">
-                        <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (click)="onEdit(member)">
+                        <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (click)="onEdit(person)">
                         </p-button>
 
                         <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
-                            (click)="onDelete(member)">
+                            (click)="onDelete(person)">
                         </p-button>
                     </div>
                 </td>

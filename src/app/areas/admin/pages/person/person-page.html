@@ -8,10 +8,10 @@
 
 </p-toolbar>
 
-<app-member-list (edit)="onEdit($event)">
-</app-member-list>
+<app-person-list (edit)="onEdit($event)">
+</app-person-list>
 
 <p-dialog [(visible)]="dialog" [modal]="true" [style]="{ width: '740px' }" [closable]="true"
-    header="Cadastro de membro">
-    <app-member-form [member]="selected" (save)="onSaved()"></app-member-form>
+    header="Cadastro de pessoa">
+    <app-person-form [person]="selected" (save)="onSaved()"></app-person-form>
 </p-dialog>

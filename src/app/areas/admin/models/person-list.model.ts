@@ -1,13 +1,13 @@
 import { MemberType } from '@/app/shared/enums/member-type';
 
-export class MemberListModel {
+export class PersonListModel {
     id: number | undefined = undefined;
     fullName: string = '';
     memberType: MemberType = MemberType.VISITOR;
     email: string = '';
     cellphone: string = '';
 
-    constructor(init?: Partial<MemberListModel>) {
+    constructor(init?: Partial<PersonListModel>) {
         Object.assign(this, init);
     }
 }

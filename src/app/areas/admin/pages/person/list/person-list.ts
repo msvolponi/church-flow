@@ -6,19 +6,19 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from "primeng/confirmdialog";
 import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
-import { MemberListModel } from '../../../models/member-list.model';
+import { PersonListModel } from '../../../models/person-list.model';
 
 @Component({
-  selector: 'app-member-list',
+  selector: 'app-person-list',
   standalone: true,
   imports: [CommonModule, TableModule, ButtonModule, ToolbarModule, ConfirmDialog],
   providers: [ConfirmationService],
-  templateUrl: './member-list.html',
-  styleUrl: './member-list.scss',
+  templateUrl: './person-list.html',
+  styleUrl: './person-list.scss',
 })
-export class MemberList {
+export class PersonList {
 
-  members = signal<MemberListModel[]>([
+  people = signal<PersonListModel[]>([
     {
       id: 1,
       fullName: 'Maria Silva',
@@ -36,12 +36,12 @@ export class MemberList {
   ]);
 
   @Output()
-  edit = new EventEmitter<MemberListModel>();
+  edit = new EventEmitter<PersonListModel>();
 
-  onEdit(member: MemberListModel): void {
+  onEdit(member: PersonListModel): void {
     this.edit.emit(member);
   }
 
-  onDelete(member: MemberListModel): void {
+  onDelete(member: PersonListModel): void {
   }
 }
