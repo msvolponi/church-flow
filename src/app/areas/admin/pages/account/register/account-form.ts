@@ -1,9 +1,9 @@
 import { ErrorCode } from "@/app/core/enums/error-codes";
 import { AuthService } from "@/app/core/services/auth.service";
-import { UserService } from "@/app/core/services/user.service";
+import { AccountService } from "@/app/core/services/account.service";
 import { ApiErrorResponse } from "@/app/shared/dtos/api-error.response";
-import { AccountRequest } from "@/app/shared/dtos/user.request";
-import { AccountResponse } from "@/app/shared/dtos/user.response";
+import { AccountRequest } from "@/app/shared/dtos/account.request";
+import { AccountResponse } from "@/app/shared/dtos/account.response";
 import { Role, RoleOptions } from "@/app/shared/enums/role";
 import { AccountMapper } from "@/app/shared/mappers/account.mapper";
 import { Validator } from "@/app/shared/pages/components/validator/validator";
@@ -41,7 +41,7 @@ export class AccountForm implements OnChanges {
   private matchPasswordValidator;
 
   constructor(private fb: FormBuilder, private validatorService: ValidatorService,
-    private toastMessageService: ToastMessageService, private userService: UserService, private authService: AuthService) {
+    private toastMessageService: ToastMessageService, private accountService: AccountService, private authService: AuthService) {
 
     this.form = fb.group({
       id: [null],
@@ -97,12 +97,12 @@ export class AccountForm implements OnChanges {
     const request: AccountRequest = AccountMapper.toRequest(form);
 
     if (this.user) {
-      this.userService.update(request).subscribe({
+      this.accountService.update(request).subscribe({
         next: (response: AccountResponse) => this.onSaveSuccess(response),
         error: (err: HttpErrorResponse) => this.onSaveError(err)
       });
     } else {
-      this.userService.create(request).subscribe({
+      this.accountService.create(request).subscribe({
         next: (response: AccountResponse) => this.onSaveSuccess(response),
         error: (err: HttpErrorResponse) => this.onSaveError(err)
       });

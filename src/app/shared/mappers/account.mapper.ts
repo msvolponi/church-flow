@@ -1,5 +1,5 @@
 import { AccountFormModel as AccountForm } from "@/app/areas/admin/models/account-form.model";
-import { AccountRequest as AccountRequest } from "../dtos/user.request";
+import { AccountRequest as AccountRequest } from "../dtos/account.request";
 
 export class AccountMapper {
 

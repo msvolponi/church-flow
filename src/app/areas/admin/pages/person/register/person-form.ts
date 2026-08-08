@@ -1,4 +1,3 @@
-import { BaptismStatus, BaptismStatusOptions } from '@/app/shared/enums/baptism-status';
 import { GenderOptions } from '@/app/shared/enums/gender';
 import { MaritalStatusOptions } from '@/app/shared/enums/marital-status';
 import { MemberType, MemberTypeOptions } from '@/app/shared/enums/member-type';
@@ -15,11 +14,12 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { PersonFormModel } from '../../../models/person-form.model';
 import { PersonListModel } from '../../../models/person-list.model';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-person-form',
   standalone: true,
-  imports: [ReactiveFormsModule, InputTextModule, SelectModule, TextareaModule, ButtonModule, FieldsetModule, FluidModule, InputMaskModule, Validator],
+  imports: [ReactiveFormsModule, InputTextModule, SelectModule, TextareaModule, ButtonModule, FieldsetModule, FluidModule, InputMaskModule, Validator, CheckboxModule],
   templateUrl: './person-form.html',
   styleUrl: './person-form.scss',
 })
@@ -33,7 +33,6 @@ export class PersonForm {
   memberTypes = MemberTypeOptions.OPTIONS;
   genders = GenderOptions.OPTIONS;
   maritalStatuses = MaritalStatusOptions.OPTIONS;
-  baptizedOptions = BaptismStatusOptions.OPTIONS;
 
   registerForm = new PersonFormModel();
   form: FormGroup;
@@ -56,7 +55,7 @@ export class PersonForm {
       city: [''],
       state: [''],
       memberSince: [''],
-      baptizedInWater: [BaptismStatus.NO],
+      baptizedInWater: [false],
       profession: [''],
       observations: [''],
     });

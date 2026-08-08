@@ -1,4 +1,4 @@
-import { UserService } from '@/app/core/services/user.service';
+import { AccountService } from '@/app/core/services/account.service';
 import { ToastMessageService } from '@/app/shared/services/toast-message.service';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, signal } from '@angular/core';
@@ -55,7 +55,7 @@ export class AccountList implements OnInit {
   edit = new EventEmitter<AccountListModel>();
 
   constructor(
-    private userService: UserService,
+    private accountService: AccountService,
     private toastMessageService: ToastMessageService,
     private confirmationService: ConfirmationService
   ) { }
@@ -65,7 +65,7 @@ export class AccountList implements OnInit {
   }
 
   reload(): void {
-    this.userService.list().subscribe({
+    this.accountService.list().subscribe({
       next: users => this.users.set(users),
       error: () => this.toastMessageService.error(
         'Erro ao carregar usuários',
@@ -79,16 +79,16 @@ export class AccountList implements OnInit {
 
   onDelete(user: AccountListModel): void {
     this.confirmationService.confirm({
-      message: `Você tem certeza que deseja deletar '${user.name}'?`,
+      message: `Você tem certeza que deseja excluir '${user.name}'?`,
       header: 'Confirmação',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
       accept: () => {
-        this.userService.delete(user.id).subscribe({
+        this.accountService.delete(user.id).subscribe({
           next: () => {
             this.users.update(list => list.filter(x => x.id !== user.id));
-            this.toastMessageService.success('Usuário deletado com sucesso', 'Usuários');
+            this.toastMessageService.success('Usuário excluído com sucesso', 'Usuários');
           }
         });
       }

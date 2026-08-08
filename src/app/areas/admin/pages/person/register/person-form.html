@@ -96,11 +96,11 @@
                 <input pInputText id="memberSince" formControlName="memberSince" type="date" />
             </div>
 
-            <div>
+            <div class="flex items-center gap-2">
+                <p-checkbox inputId="baptizedInWater" formControlName="baptizedInWater" [binary]="true">
+                </p-checkbox>
+
                 <label for="baptizedInWater">Batizado nas Águas</label>
-                <p-select id="baptizedInWater" formControlName="baptizedInWater" [options]="baptizedOptions"
-                    optionLabel="label" optionValue="value" class="w-full">
-                </p-select>
             </div>
 
             <div>

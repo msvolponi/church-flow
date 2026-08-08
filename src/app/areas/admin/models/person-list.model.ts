@@ -1,7 +1,7 @@
 import { MemberType } from '@/app/shared/enums/member-type';
 
 export class PersonListModel {
-    id: number | undefined = undefined;
+    id: number = 0;
     fullName: string = '';
     memberType: MemberType = MemberType.VISITOR;
     email: string = '';

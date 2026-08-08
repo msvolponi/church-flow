@@ -1,4 +1,3 @@
-import { BaptismStatus } from '@/app/shared/enums/baptism-status';
 import { Gender } from '@/app/shared/enums/gender';
 import { MaritalStatus } from '@/app/shared/enums/marital-status';
 import { MemberType } from '@/app/shared/enums/member-type';
@@ -21,7 +20,7 @@ export class PersonFormModel {
     city: string = '';
     state: string = '';
     memberSince: string = '';
-    baptizedInWater: BaptismStatus = BaptismStatus.NO;
+    baptizedInWater: boolean = false;
     profession: string = '';
     observations: string = '';
 
