@@ -12,6 +12,7 @@ export class PersonMapper {
             gender: form.gender || undefined,
             birthDate: form.birthDate || undefined,
             maritalStatus: form.maritalStatus || undefined,
+            spouseId: form.spouseId || undefined,
             cellphone: form.cellphone || undefined,
             phone: form.phone || undefined,
             email: form.email || undefined,
@@ -24,6 +25,7 @@ export class PersonMapper {
             state: form.state || undefined,
             memberSince: form.memberSince || undefined,
             baptizedInWater: form.baptizedInWater,
+            baptismDate: form.baptismDate || undefined,
             profession: form.profession || undefined,
             observations: form.observations || undefined,
         };
@@ -37,6 +39,7 @@ export class PersonMapper {
             gender: response.gender,
             birthDate: response.birthDate,
             maritalStatus: response.maritalStatus,
+            spouseId: response.spouseId,
             cellphone: response.cellphone,
             phone: response.phone,
             email: response.email,
@@ -49,6 +52,7 @@ export class PersonMapper {
             state: response.state,
             memberSince: response.memberSince,
             baptizedInWater: response.baptizedInWater,
+            baptismDate: response.baptismDate,
             profession: response.profession,
             observations: response.observations,
         });

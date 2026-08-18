@@ -11,6 +11,7 @@ export interface PersonRequest {
   gender?: Gender;
   birthDate?: string;
   maritalStatus?: MaritalStatus;
+  spouseId?: number;
   cellphone?: string;
   phone?: string;
   email?: string;
@@ -23,6 +24,7 @@ export interface PersonRequest {
   state?: State;
   memberSince?: string;
   baptizedInWater?: boolean;
+  baptismDate?: string;
   profession?: string;
   observations?: string;
 }

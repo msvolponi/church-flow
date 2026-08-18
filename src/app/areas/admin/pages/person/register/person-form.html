@@ -37,6 +37,28 @@
                 </p-select>
             </div>
 
+            <div class="field">
+                <label for="spouse">Cônjuge</label>
+
+                <p-select id="spouse" formControlName="spouseId" [options]="spouseOptions" optionLabel="fullName"
+                    optionValue="id" [filter]="true" filterBy="fullName" [showClear]="true"
+                    placeholder="Selecione o cônjuge" class="w-full">
+
+                    <ng-template #item let-person>
+                        <div>
+                            <div class="font-medium">
+                                {{ person.fullName }}
+                            </div>
+
+                            <div class="text-sm text-gray-500">
+                                {{ person.memberTypeLabel }}
+                            </div>
+                        </div>
+                    </ng-template>
+
+                </p-select>
+            </div>
+
             <div>
                 <label for="cellphone">Celular</label>
                 <p-inputMask id="cellphone" formControlName="cellphone" mask="(99) 99999-9999" styleClass="w-full">
@@ -101,6 +123,11 @@
                 </p-checkbox>
 
                 <label for="baptizedInWater">Batizado nas Águas</label>
+            </div>
+
+            <div>
+                <label for="baptismDate">Data do Batismo</label>
+                <input pInputText id="baptismDate" formControlName="baptismDate" type="date" />
             </div>
 
             <div>

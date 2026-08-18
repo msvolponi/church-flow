@@ -11,6 +11,7 @@ export class PersonModel {
     gender: Gender = Gender.OTHER;
     birthDate: string = '';
     maritalStatus: MaritalStatus | '' = '';
+    spouseId?: number;
     cellphone: string = '';
     phone: string = '';
     email: string = '';
@@ -23,6 +24,7 @@ export class PersonModel {
     state: State | '' = '';
     memberSince: string = '';
     baptizedInWater: boolean = false;
+    baptismDate: string = '';
     profession: string = '';
     observations: string = '';
 

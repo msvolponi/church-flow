@@ -1,6 +1,6 @@
 <div class="card">
 
-    <p-table #dt [value]="users()" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="users()" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id" sortField="name"
         currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} usuários"
         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 20, 30]">
 

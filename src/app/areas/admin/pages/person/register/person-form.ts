@@ -11,7 +11,7 @@ import { Validator } from "@/app/shared/pages/components/validator/validator";
 import { ValidatorService } from '@/app/shared/pages/components/validator/validator.service';
 import { ToastMessageService } from '@/app/shared/services/toast-message.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, signal, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -30,13 +30,14 @@ import { PersonModel } from '../../../models/person.model';
   templateUrl: './person-form.html',
   styleUrl: './person-form.scss',
 })
-export class PersonForm {
+export class PersonForm implements OnInit {
   @Input()
   person: PersonModel | null = null;
 
   @Output()
   save = new EventEmitter<PersonResponse>();
 
+  people = signal<PersonModel[]>([]);
   memberTypes = MemberTypeOptions.OPTIONS;
   genders = GenderOptions.OPTIONS;
   maritalStatuses = MaritalStatusOptions.OPTIONS;
@@ -55,6 +56,7 @@ export class PersonForm {
       gender: [''],
       birthDate: [''],
       maritalStatus: [''],
+      spouseId: [null as number | null],
       cellphone: [''],
       phone: [''],
       email: [''],
@@ -67,11 +69,16 @@ export class PersonForm {
       state: [''],
       memberSince: [''],
       baptizedInWater: [false],
+      baptismDate: [''],
       profession: [''],
       observations: [''],
     });
 
     this.form.patchValue(this.registerForm);
+  }
+
+  ngOnInit() {
+    this.loadPeople();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -141,5 +148,22 @@ export class PersonForm {
 
     this.save.emit(response);
     this.resetForm();
+  }
+
+  get spouseOptions(): PersonModel[] {
+    const currentId = this.form.value.id;
+
+    return this.people().filter(
+      person => person.id !== currentId
+    );
+  }
+
+  loadPeople(): void {
+    this.personService.list().subscribe({
+      next: people => this.people.set(people.map(person => PersonMapper.toModel(person))),
+      error: () => this.toastMessageService.error(
+        'Erro ao carregar pessoas',
+        'Pessoas')
+    });
   }
 }

@@ -1,6 +1,6 @@
 <div class="card">
 
-    <p-table #dt [value]="people()" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="people()" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id" sortField="fullName"
         currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} membros" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 20, 30]">
 
@@ -73,7 +73,7 @@
                 </td>
 
                 <td class="hidden md:table-cell">
-                     {{ person.memberTypeLabel }}
+                    {{ person.memberTypeLabel }}
                 </td>
 
                 <td class="hidden md:table-cell">
