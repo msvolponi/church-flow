@@ -1,4 +1,5 @@
 import { AccountService } from '@/app/core/services/account.service';
+import { AccountMapper } from '@/app/shared/mappers/account.mapper';
 import { ToastMessageService } from '@/app/shared/services/toast-message.service';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, signal } from '@angular/core';
@@ -66,7 +67,7 @@ export class AccountList implements OnInit {
 
   reload(): void {
     this.accountService.list().subscribe({
-      next: users => this.users.set(users),
+      next: users => this.users.set(users.map(user => AccountMapper.toModel(user))),
       error: () => this.toastMessageService.error(
         'Erro ao carregar usuários',
         'Usuários')

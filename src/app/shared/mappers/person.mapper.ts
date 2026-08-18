@@ -1,5 +1,6 @@
 import { PersonModel } from "@/app/areas/admin/models/person.model";
 import { PersonRequest } from "../dtos/person.request";
+import { PersonResponse } from "../dtos/person.response";
 
 export class PersonMapper {
 
@@ -27,4 +28,30 @@ export class PersonMapper {
             observations: form.observations || undefined,
         };
     }
+
+    static toModel(response: PersonResponse): PersonModel {
+        return new PersonModel({
+            id: response.id,
+            fullName: response.fullName,
+            memberType: response.memberType,
+            gender: response.gender,
+            birthDate: response.birthDate,
+            maritalStatus: response.maritalStatus,
+            cellphone: response.cellphone,
+            phone: response.phone,
+            email: response.email,
+            zipCode: response.zipCode,
+            street: response.street,
+            number: response.number,
+            complement: response.complement,
+            neighborhood: response.neighborhood,
+            city: response.city,
+            state: response.state,
+            memberSince: response.memberSince,
+            baptizedInWater: response.baptizedInWater,
+            profession: response.profession,
+            observations: response.observations,
+        });
+    }
+
 }

@@ -7,6 +7,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 
 import { PersonService } from '@/app/core/services/person.service';
+import { PersonMapper } from '@/app/shared/mappers/person.mapper';
 import { ToastMessageService } from '@/app/shared/services/toast-message.service';
 import { FormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -68,7 +69,7 @@ export class PersonList implements OnInit {
 
   reload(): void {
     this.personService.list().subscribe({
-      next: people => this.people.set(people),
+      next: people => this.people.set(people.map(person => PersonMapper.toModel(person))),
       error: () => this.toastMessageService.error(
         'Erro ao carregar pessoas',
         'Pessoas')

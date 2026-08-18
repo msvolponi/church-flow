@@ -11,9 +11,9 @@ export class PersonService {
 
     constructor(private api: ApiService) { }
 
-    list(): Observable<PersonModel[]> {
+    list(): Observable<PersonResponse[]> {
         return this.api
-            .get<ApiResponse<PersonModel[]>>('persons')
+            .get<ApiResponse<PersonResponse[]>>('persons')
             .pipe(map(response => response.data));
     }
 

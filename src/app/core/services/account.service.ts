@@ -11,9 +11,9 @@ export class AccountService {
 
     constructor(private api: ApiService) { }
 
-    list(): Observable<AccountModel[]> {
+    list(): Observable<AccountResponse[]> {
         return this.api
-            .get<ApiResponse<AccountModel[]>>('users')
+            .get<ApiResponse<AccountResponse[]>>('users')
             .pipe(map(response => response.data));
     }
 

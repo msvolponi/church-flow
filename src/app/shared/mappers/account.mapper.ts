@@ -1,5 +1,6 @@
 import { AccountModel } from "@/app/areas/admin/models/account.model";
 import { AccountRequest } from "../dtos/account.request";
+import { AccountResponse } from "../dtos/account.response";
 
 export class AccountMapper {
 
@@ -11,5 +12,14 @@ export class AccountMapper {
             password: form.password,
             role: form.role,
         };
+    }
+
+    static toModel(response: AccountResponse): AccountModel {
+        return new AccountModel({
+            id: response.id,
+            name: response.name,
+            email: response.email,
+            role: response.role,
+        });
     }
 }
