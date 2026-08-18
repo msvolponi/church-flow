@@ -38,6 +38,6 @@ export class PersonPage {
   onSaved(): void {
 
     this.dialog = false;
-    this.personList.reload();
+    this.personList.load();
   }
 }

@@ -64,10 +64,10 @@ export class PersonList implements OnInit {
 
 
   ngOnInit() {
-    this.reload();
+    this.load();
   }
 
-  reload(): void {
+  load(): void {
     this.personService.list().subscribe({
       next: people => this.people.set(people.map(person => PersonMapper.toModel(person))),
       error: () => this.toastMessageService.error(

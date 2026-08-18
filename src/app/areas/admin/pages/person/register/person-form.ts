@@ -78,7 +78,7 @@ export class PersonForm implements OnInit {
   }
 
   ngOnInit() {
-    this.loadPeople();
+    this.load();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -156,6 +156,10 @@ export class PersonForm implements OnInit {
     return this.people().filter(
       person => person.id !== currentId
     );
+  }
+
+  load(): void {
+    this.loadPeople();
   }
 
   loadPeople(): void {
