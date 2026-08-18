@@ -17,8 +17,7 @@ import { ButtonModule } from 'primeng/button';
 import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { AccountFormModel } from '../../../models/account-form.model';
-import { AccountListModel } from "../../../models/account-list.model";
+import { AccountModel } from '../../../models/account.model';
 import { FieldsetModule } from "primeng/fieldset";
 
 @Component({
@@ -30,12 +29,12 @@ import { FieldsetModule } from "primeng/fieldset";
 })
 export class AccountForm implements OnChanges {
   @Input()
-  user: AccountListModel | null = null;
+  user: AccountModel | null = null;
 
   @Output()
   save = new EventEmitter<AccountResponse>();
 
-  registerForm = new AccountFormModel();
+  registerForm = new AccountModel();
   form: FormGroup;
   roles = RoleOptions.OPTIONS;
   private matchPasswordValidator;
@@ -93,7 +92,7 @@ export class AccountForm implements OnChanges {
       return;
     }
 
-    const form = new AccountFormModel(this.form.getRawValue());
+    const form = new AccountModel(this.form.getRawValue());
     const request: AccountRequest = AccountMapper.toRequest(form);
 
     if (this.user) {
@@ -140,7 +139,7 @@ export class AccountForm implements OnChanges {
   }
 
   private resetForm(): void {
-    this.form.reset(new AccountFormModel());
+    this.form.reset(new AccountModel());
     this.applySecurityRole();
   }
 

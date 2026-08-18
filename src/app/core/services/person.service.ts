@@ -1,4 +1,4 @@
-import { PersonListModel } from "@/app/areas/admin/models/person-list.model";
+import { PersonModel } from "@/app/areas/admin/models/person.model";
 import { PersonRequest } from "@/app/shared/dtos/person.request";
 import { PersonResponse } from "@/app/shared/dtos/person.response";
 import { Injectable } from "@angular/core";
@@ -11,9 +11,9 @@ export class PersonService {
 
     constructor(private api: ApiService) { }
 
-    list(): Observable<PersonListModel[]> {
+    list(): Observable<PersonModel[]> {
         return this.api
-            .get<ApiResponse<PersonListModel[]>>('persons')
+            .get<ApiResponse<PersonModel[]>>('persons')
             .pipe(map(response => response.data));
     }
 
@@ -28,8 +28,9 @@ export class PersonService {
     }
 
     update(request: PersonRequest): Observable<PersonResponse> {
+        debugger;
         return this.api
-            .put<ApiResponse<PersonResponse>, PersonRequest>('persons', request)
+            .put<ApiResponse<PersonResponse>, PersonRequest>(`persons/${request.id}`, request)
             .pipe(map(response => response.data));
     }
 }

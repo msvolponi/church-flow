@@ -1,12 +1,15 @@
 import { Role } from '@/app/shared/enums/role';
 
-export class AccountListModel {
-    id: number = 0;
+export class AccountModel {
+
+    id?: number;
     name: string = '';
     email: string = '';
+    password: string = '';
+    confirmPassword: string = '';
     role: Role = Role.ADMIN;
 
-    constructor(init?: Partial<AccountListModel>) {
+    constructor(init?: Partial<AccountModel>) {
         Object.assign(this, init);
     }
 }

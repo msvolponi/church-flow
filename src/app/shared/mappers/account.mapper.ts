@@ -1,11 +1,11 @@
-import { AccountFormModel as AccountForm } from "@/app/areas/admin/models/account-form.model";
-import { AccountRequest as AccountRequest } from "../dtos/account.request";
+import { AccountModel } from "@/app/areas/admin/models/account.model";
+import { AccountRequest } from "../dtos/account.request";
 
 export class AccountMapper {
 
-    static toRequest(form: AccountForm): AccountRequest {
+    static toRequest(form: AccountModel): AccountRequest {
         return {
-            id: form.id ?? undefined,
+            id: form.id,
             name: form.name,
             email: form.email,
             password: form.password,

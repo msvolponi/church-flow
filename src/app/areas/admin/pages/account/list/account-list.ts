@@ -20,7 +20,7 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { AccountListModel } from '../../../models/account-list.model';
+import { AccountModel } from '../../../models/account.model';
 
 @Component({
   selector: 'app-account-list',
@@ -49,10 +49,10 @@ import { AccountListModel } from '../../../models/account-list.model';
 
 export class AccountList implements OnInit {
 
-  users = signal<AccountListModel[]>([]);
+  users = signal<AccountModel[]>([]);
 
   @Output()
-  edit = new EventEmitter<AccountListModel>();
+  edit = new EventEmitter<AccountModel>();
 
   constructor(
     private accountService: AccountService,
@@ -73,11 +73,11 @@ export class AccountList implements OnInit {
     });
   }
 
-  onEdit(user: AccountListModel): void {
+  onEdit(user: AccountModel): void {
     this.edit.emit(user);
   }
 
-  onDelete(user: AccountListModel): void {
+  onDelete(user: AccountModel): void {
     this.confirmationService.confirm({
       message: `Você tem certeza que deseja excluir '${user.name}'?`,
       header: 'Confirmação',
@@ -85,7 +85,7 @@ export class AccountList implements OnInit {
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
       accept: () => {
-        this.accountService.delete(user.id).subscribe({
+        this.accountService.delete(user.id!).subscribe({
           next: () => {
             this.users.update(list => list.filter(x => x.id !== user.id));
             this.toastMessageService.success('Usuário excluído com sucesso', 'Usuários');

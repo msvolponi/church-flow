@@ -1,8 +1,8 @@
 export enum MaritalStatus {
-  SINGLE = 'Solteiro(a)',
-  MARRIED = 'Casado(a)',
-  DIVORCED = 'Divorciado(a)',
-  WIDOWED = 'Viúvo(a)'
+  SINGLE = 'SINGLE',
+  MARRIED = 'MARRIED',
+  DIVORCED = 'DIVORCED',
+  WIDOWED = 'WIDOWED'
 }
 
 export const MaritalStatusOptions = {

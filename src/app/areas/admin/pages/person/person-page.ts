@@ -3,7 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ToolbarModule } from 'primeng/toolbar';
-import { PersonListModel } from '../../models/person-list.model';
+import { PersonModel } from '../../models/person.model';
 import { PersonList } from './list/person-list';
 import { PersonForm } from './register/person-form';
 
@@ -21,7 +21,7 @@ export class PersonPage {
 
   dialog = false;
 
-  selected: PersonListModel | null = null;
+  selected: PersonModel | null = null;
 
   onCreate(): void {
 
@@ -29,7 +29,7 @@ export class PersonPage {
     this.dialog = true;
   }
 
-  onEdit(person: PersonListModel): void {
+  onEdit(person: PersonModel): void {
 
     this.selected = person;
     this.dialog = true;
@@ -38,6 +38,6 @@ export class PersonPage {
   onSaved(): void {
 
     this.dialog = false;
-    //this.personList.reload();
+    this.personList.reload();
   }
 }

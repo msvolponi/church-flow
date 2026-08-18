@@ -5,7 +5,6 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { PersonListModel } from '../../../models/person-list.model';
 
 import { PersonService } from '@/app/core/services/person.service';
 import { ToastMessageService } from '@/app/shared/services/toast-message.service';
@@ -22,6 +21,7 @@ import { RippleModule } from 'primeng/ripple';
 import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
+import { PersonModel } from '../../../models/person.model';
 
 @Component({
   selector: 'app-person-list',
@@ -50,10 +50,10 @@ import { TextareaModule } from 'primeng/textarea';
 })
 export class PersonList implements OnInit {
 
-  people = signal<PersonListModel[]>([]);
+  people = signal<PersonModel[]>([]);
 
   @Output()
-  edit = new EventEmitter<PersonListModel>();
+  edit = new EventEmitter<PersonModel>();
 
   constructor(
     private personService: PersonService,
@@ -75,11 +75,11 @@ export class PersonList implements OnInit {
     });
   }
 
-  onEdit(member: PersonListModel): void {
+  onEdit(member: PersonModel): void {
     this.edit.emit(member);
   }
 
-  onDelete(person: PersonListModel): void {
+  onDelete(person: PersonModel): void {
     this.confirmationService.confirm({
       message: `Você tem certeza que deseja excluir '${person.fullName}'?`,
       header: 'Confirmação',
@@ -87,7 +87,8 @@ export class PersonList implements OnInit {
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
       accept: () => {
-        this.personService.delete(person.id).subscribe({
+        debugger
+        this.personService.delete(person.id!).subscribe({
           next: () => {
             this.people.update(list => list.filter(x => x.id !== person.id));
             this.toastMessageService.success('Pessoa excluída com sucesso', 'Pessoas');
