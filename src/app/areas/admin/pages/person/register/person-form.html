@@ -1,151 +1,463 @@
 <form class="form-shell" [formGroup]="form">
     <p-fluid>
-        <div class="grid gap-4 md:grid-cols-2">
 
-            <div class="md:col-span-2">
-                <label for="fullName">
-                    Nome Completo <span class="text-red-500">*</span>
-                </label>
-                <input pInputText id="fullName" formControlName="fullName" [maxLength]="255" />
-                <app-validator [displayError]="isValidField('fullName', 'required')"
-                    errorMsg="Nome completo é obrigatório" />
+        <!-- ========================================================= -->
+        <!-- DADOS PESSOAIS                                            -->
+        <!-- ========================================================= -->
+
+        <section class="mb-7">
+
+            <div class="mb-4">
+
+                <div class="flex items-center gap-3">
+                    <i class="pi pi-user text-primary-600 text-xl"></i>
+
+                    <div class="text-2xl font-semibold leading-tight">
+                        Dados pessoais
+                    </div>
+                </div>
+
+                <p class="text-sm text-surface-500 leading-tight mt-1">
+                    Informações básicas da pessoa
+                </p>
+
+                <div class="mt-3 border-b border-surface-200"></div>
+
             </div>
 
-            <div>
-                <label for="memberType">Tipo</label>
-                <p-select id="memberType" formControlName="memberType" [options]="memberTypes" optionLabel="label"
-                    optionValue="value" class="w-full">
-                </p-select>
-            </div>
 
-            <div>
-                <label for="gender">Sexo</label>
-                <p-select id="gender" formControlName="gender" [options]="genders" optionLabel="label"
-                    optionValue="value" class="w-full">
-                </p-select>
-            </div>
+            <div class="grid gap-4 md:grid-cols-2">
 
-            <div>
-                <label for="birthDate">Data de Nascimento</label>
-                <input pInputText id="birthDate" formControlName="birthDate" type="date" />
-            </div>
+                <!-- Nome -->
+                <div class="md:col-span-2">
 
-            <div>
-                <label for="maritalStatus">Estado Civil</label>
-                <p-select id="maritalStatus" formControlName="maritalStatus" [options]="maritalStatuses"
-                    optionLabel="label" optionValue="value" class="w-full">
-                </p-select>
-            </div>
+                    <label for="fullName">
+                        Nome Completo
+                        <span class="text-red-500">*</span>
+                    </label>
 
-            <div class="field">
-                <label for="spouse">Cônjuge</label>
+                    <input pInputText id="fullName" formControlName="fullName" [maxLength]="255" />
 
-                <p-select id="spouse" formControlName="spouseId" [options]="spouseOptions" optionLabel="fullName"
-                    optionValue="id" [filter]="true" filterBy="fullName" [showClear]="true"
-                    placeholder="Selecione o cônjuge" class="w-full">
+                    <app-validator [displayError]="isValidField('fullName', 'required')"
+                        errorMsg="Nome completo é obrigatório" />
 
-                    <ng-template #item let-person>
-                        <div>
-                            <div class="font-medium">
-                                {{ person.fullName }}
+                </div>
+
+
+                <!-- Sexo -->
+                <div>
+
+                    <label for="gender">
+                        Sexo
+                    </label>
+
+                    <p-select id="gender" formControlName="gender" [options]="genders" optionLabel="label"
+                        optionValue="value" class="w-full">
+                    </p-select>
+
+                </div>
+
+
+                <!-- Data de nascimento -->
+                <div>
+
+                    <label for="birthDate">
+                        Data de Nascimento
+                    </label>
+
+                    <input pInputText id="birthDate" formControlName="birthDate" type="date" />
+
+                </div>
+
+
+                <!-- Estado civil -->
+                <div>
+
+                    <label for="maritalStatus">
+                        Estado Civil
+                    </label>
+
+                    <p-select id="maritalStatus" formControlName="maritalStatus" [options]="maritalStatuses"
+                        optionLabel="label" optionValue="value" class="w-full">
+                    </p-select>
+
+                </div>
+
+
+                <!-- Cônjuge -->
+                <div>
+
+                    <label for="spouse">
+                        Cônjuge
+                    </label>
+
+                    <p-select id="spouse" formControlName="spouseId" [options]="spouseOptions" optionLabel="fullName"
+                        optionValue="id" [filter]="true" filterBy="fullName" [showClear]="true"
+                        placeholder="Selecione o cônjuge" class="w-full">
+
+                        <ng-template #item let-person>
+
+                            <div>
+
+                                <div class="font-medium">
+                                    {{ person.fullName }}
+                                </div>
+
+                                <div class="text-sm text-surface-500">
+                                    {{ person.memberTypeLabel }}
+                                </div>
+
                             </div>
 
-                            <div class="text-sm text-gray-500">
-                                {{ person.memberTypeLabel }}
-                            </div>
-                        </div>
-                    </ng-template>
+                        </ng-template>
 
-                </p-select>
+                    </p-select>
+
+                </div>
+
+
+                <!-- Profissão -->
+                <div>
+
+                    <label for="profession">
+                        Profissão
+                    </label>
+
+                    <input pInputText id="profession" formControlName="profession" [maxLength]="255" />
+
+                </div>
+
             </div>
 
-            <div>
-                <label for="cellphone">Celular</label>
-                <p-inputMask id="cellphone" formControlName="cellphone" mask="(99) 99999-9999" styleClass="w-full">
-                </p-inputMask>
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- CONTATO                                                    -->
+        <!-- ========================================================= -->
+
+        <section class="mb-7">
+
+            <div class="mb-4">
+
+                <div class="flex items-center gap-3">
+                    <i class="pi pi-phone text-primary-600 text-xl"></i>
+
+                    <div class="text-2xl font-semibold leading-tight">
+                        Contato
+                    </div>
+                </div>
+
+                <p class="text-sm text-surface-500 leading-tight mt-1">
+                    Telefones e e-mail para contato
+                </p>
+
+                <div class="mt-3 border-b border-surface-200"></div>
+
             </div>
 
-            <div>
-                <label for="email">E-mail</label>
-                <input pInputText id="email" formControlName="email" type="email" [maxLength]="255" />
-                <app-validator [displayError]="isValidField('email', 'email')" errorMsg="E-mail não é válido" />
+
+            <div class="grid gap-4 md:grid-cols-2">
+
+                <!-- Celular -->
+                <div>
+
+                    <label for="cellphone">
+                        Celular
+                    </label>
+
+                    <p-inputMask id="cellphone" formControlName="cellphone" mask="(99) 99999-9999" styleClass="w-full">
+                    </p-inputMask>
+
+                </div>
+
+
+                <!-- Telefone -->
+                <div>
+
+                    <label for="phone">
+                        Telefone
+                    </label>
+
+                    <p-inputMask id="phone" formControlName="phone" mask="(99) 9999-9999" styleClass="w-full">
+                    </p-inputMask>
+
+                </div>
+
+
+                <!-- E-mail -->
+                <div class="md:col-span-2">
+
+                    <label for="email">
+                        E-mail
+                    </label>
+
+                    <input pInputText id="email" formControlName="email" type="email" [maxLength]="255" />
+
+                    <app-validator [displayError]="isValidField('email', 'email')" errorMsg="E-mail não é válido" />
+
+                </div>
+
             </div>
 
-            <div>
-                <label for="zipCode">CEP</label>
-                <p-inputMask id="zipCode" formControlName="zipCode" mask="99999-999" styleClass="w-full">
-                </p-inputMask>
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- ENDEREÇO                                                    -->
+        <!-- ========================================================= -->
+
+        <section class="mb-7">
+
+            <div class="mb-4">
+
+                <div class="flex items-center gap-3">
+                    <i class="pi pi-map-marker text-primary-600 text-xl"></i>
+
+                    <div class="text-2xl font-semibold leading-tight">
+                        Endereço
+                    </div>
+                </div>
+
+                <p class="text-sm text-surface-500 leading-tight mt-1">
+                    Endereço residencial
+                </p>
+
+                <div class="mt-3 border-b border-surface-200"></div>
+
             </div>
 
-            <div>
-                <label for="street">Rua</label>
-                <input pInputText id="street" formControlName="street" [maxLength]="255" />
+
+            <div class="grid gap-4 md:grid-cols-2">
+
+                <!-- CEP -->
+                <div>
+
+                    <label for="zipCode">
+                        CEP
+                    </label>
+
+                    <p-inputMask id="zipCode" formControlName="zipCode" mask="99999-999" styleClass="w-full">
+                    </p-inputMask>
+
+                </div>
+
+
+                <!-- Rua -->
+                <div>
+
+                    <label for="street">
+                        Rua
+                    </label>
+
+                    <input pInputText id="street" formControlName="street" [maxLength]="255" />
+
+                </div>
+
+
+                <!-- Número -->
+                <div>
+
+                    <label for="number">
+                        Número
+                    </label>
+
+                    <input pInputText id="number" formControlName="number" [maxLength]="20" />
+
+                </div>
+
+
+                <!-- Complemento -->
+                <div>
+
+                    <label for="complement">
+                        Complemento
+                    </label>
+
+                    <input pInputText id="complement" formControlName="complement" [maxLength]="255" />
+
+                </div>
+
+
+                <!-- Bairro -->
+                <div>
+
+                    <label for="neighborhood">
+                        Bairro
+                    </label>
+
+                    <input pInputText id="neighborhood" formControlName="neighborhood" [maxLength]="255" />
+
+                </div>
+
+
+                <!-- Cidade -->
+                <div>
+
+                    <label for="city">
+                        Cidade
+                    </label>
+
+                    <input pInputText id="city" formControlName="city" [maxLength]="255" />
+
+                </div>
+
+
+                <!-- Estado -->
+                <div>
+
+                    <label for="state">
+                        Estado
+                    </label>
+
+                    <p-select id="state" formControlName="state" [options]="states" optionLabel="label"
+                        optionValue="value" [filter]="true" filterBy="label" [showClear]="true"
+                        placeholder="Selecione o estado" class="w-full">
+                    </p-select>
+
+                </div>
+
             </div>
 
-            <div>
-                <label for="number">Número</label>
-                <input pInputText id="number" formControlName="number" [maxLength]="20" />
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- DADOS DA IGREJA                                             -->
+        <!-- ========================================================= -->
+
+        <section class="mb-7">
+
+            <div class="mb-4">
+
+                <div class="flex items-center gap-3">
+                    <i class="pi pi-building text-primary-600 text-xl"></i>
+
+                    <div class="text-2xl font-semibold leading-tight">
+                        Dados da igreja
+                    </div>
+                </div>
+
+                <p class="text-sm text-surface-500 leading-tight mt-1">
+                    Informações relacionadas à vida da pessoa na igreja
+                </p>
+
+                <div class="mt-3 border-b border-surface-200"></div>
+
             </div>
 
-            <div>
-                <label for="complement">Complemento</label>
-                <input pInputText id="complement" formControlName="complement" [maxLength]="255" />
+
+            <div class="grid gap-4 md:grid-cols-2">
+
+                <!-- Tipo -->
+                <div>
+
+                    <label for="memberType">
+                        Tipo
+                    </label>
+
+                    <p-select id="memberType" formControlName="memberType" [options]="memberTypes" optionLabel="label"
+                        optionValue="value" class="w-full">
+                    </p-select>
+
+                </div>
+
+
+                <!-- Membro desde -->
+                <div>
+
+                    <label for="memberSince">
+                        Membro Desde
+                    </label>
+
+                    <input pInputText id="memberSince" formControlName="memberSince" type="date" />
+
+                </div>
+
+
+                <!-- Batizado -->
+                <div class="flex items-center gap-2">
+
+                    <p-checkbox inputId="baptizedInWater" formControlName="baptizedInWater" [binary]="true">
+                    </p-checkbox>
+
+                    <label for="baptizedInWater">
+                        Batizado nas Águas
+                    </label>
+
+                </div>
+
+
+                <!-- Data do batismo -->
+                <div>
+
+                    <label for="baptismDate">
+                        Data do Batismo
+                    </label>
+
+                    <input pInputText id="baptismDate" formControlName="baptismDate" type="date" />
+
+                </div>
+
             </div>
 
-            <div>
-                <label for="neighborhood">Bairro</label>
-                <input pInputText id="neighborhood" formControlName="neighborhood" [maxLength]="255" />
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- INFORMAÇÕES ADICIONAIS                                      -->
+        <!-- ========================================================= -->
+
+        <section class="mb-7">
+
+            <div class="mb-4">
+
+                <div class="flex items-center gap-3">
+                    <i class="pi pi-file-edit text-primary-600 text-xl"></i>
+
+                    <div class="text-2xl font-semibold leading-tight">
+                        Informações adicionais
+                    </div>
+                </div>
+
+                <p class="text-sm text-surface-500 leading-tight mt-1">
+                    Outras informações relevantes
+                </p>
+
+                <div class="mt-3 border-b border-surface-200"></div>
+
             </div>
 
-            <div>
-                <label for="city">Cidade</label>
-                <input pInputText id="city" formControlName="city" [maxLength]="255" />
+
+            <div class="grid gap-4">
+
+                <div>
+
+                    <label for="observations">
+                        Observações
+                    </label>
+
+                    <textarea pTextarea id="observations" formControlName="observations" rows="4" [maxLength]="1000">
+                    </textarea>
+
+                </div>
+
             </div>
 
-            <div>
-                <label for="state">Estado</label>
-                <input pInputText id="state" formControlName="state" [maxLength]="2" />
-            </div>
+        </section>
 
-            <div>
-                <label for="phone">Telefone</label>
-                <p-inputMask id="phone" formControlName="phone" mask="(99) 9999-9999" styleClass="w-full">
-                </p-inputMask>
-            </div>
-
-            <div>
-                <label for="memberSince">Membro Desde</label>
-                <input pInputText id="memberSince" formControlName="memberSince" type="date" />
-            </div>
-
-            <div class="flex items-center gap-2">
-                <p-checkbox inputId="baptizedInWater" formControlName="baptizedInWater" [binary]="true">
-                </p-checkbox>
-
-                <label for="baptizedInWater">Batizado nas Águas</label>
-            </div>
-
-            <div>
-                <label for="baptismDate">Data do Batismo</label>
-                <input pInputText id="baptismDate" formControlName="baptismDate" type="date" />
-            </div>
-
-            <div>
-                <label for="profession">Profissão</label>
-                <input pInputText id="profession" formControlName="profession" [maxLength]="255" />
-            </div>
-
-            <div class="md:col-span-2">
-                <label for="observations">Observações</label>
-                <textarea pTextarea id="observations" formControlName="observations" rows="3" [maxLength]="1000">
-                </textarea>
-            </div>
-
-        </div>
     </p-fluid>
 
-    <div class="flex justify-end gap-2 mt-4">
+
+    <!-- ============================================================= -->
+    <!-- AÇÕES                                                          -->
+    <!-- ============================================================= -->
+
+    <div class="flex justify-end gap-2 mt-5 pt-4 border-t border-surface-200">
+
         <button pButton label="Salvar" type="button" (click)="onSave()">
         </button>
+
     </div>
+
 </form>

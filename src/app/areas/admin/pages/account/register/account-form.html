@@ -1,49 +1,136 @@
 <form class="form-shell" [formGroup]="form">
+
     <p-fluid>
-        <div class="grid gap-4 md:grid-cols-2">
-            <div class="md:col-span-2">
-                <label for="name">Nome Completo <span class="text-red-500">*</span></label>
-                <input pInputText id="name" formControlName="name" type="text" [maxLength]="255" />
-                <app-validator [displayError]="isValidField('name', 'required')"
-                    errorMsg="Nome completo é obrigatório" />
+
+        <!-- ========================================================= -->
+        <!-- DADOS DA CONTA                                             -->
+        <!-- ========================================================= -->
+
+        <section class="mb-7">
+
+            <div class="mb-4">
+
+                <div class="flex items-center gap-3">
+                    <i class="pi pi-user text-primary-600 text-xl"></i>
+
+                    <div class="text-2xl font-semibold leading-tight">
+                        Dados da conta
+                    </div>
+                </div>
+
+                <p class="text-sm text-surface-500 leading-tight mt-1">
+                    Informações de acesso e perfil do usuário
+                </p>
+
+                <div class="mt-3 border-b border-surface-200"></div>
+
             </div>
 
 
-            <div>
-                <label for="role">Perfil <span class="text-red-500">*</span></label>
-                <p-select id="role" formControlName="role" [options]="roles" optionLabel="label" optionValue="value"
-                    class="w-full">
-                </p-select>
+            <div class="grid gap-4 md:grid-cols-2">
+
+                <!-- Nome -->
+                <div class="md:col-span-2">
+
+                    <label for="name">
+                        Nome Completo
+                        <span class="text-red-500">*</span>
+                    </label>
+
+                    <input pInputText id="name" formControlName="name" type="text" [maxLength]="255" />
+
+                    <app-validator [displayError]="isValidField('name', 'required')"
+                        errorMsg="Nome completo é obrigatório" />
+
+                </div>
+
+
+                <!-- Perfil -->
+                <div>
+
+                    <label for="role">
+                        Perfil
+                        <span class="text-red-500">*</span>
+                    </label>
+
+                    <p-select id="role" formControlName="role" [options]="roles" optionLabel="label" optionValue="value"
+                        class="w-full">
+                    </p-select>
+
+                </div>
+
+
+                <!-- E-mail -->
+                <div>
+
+                    <label for="email">
+                        E-mail
+                        <span class="text-red-500">*</span>
+                    </label>
+
+                    <input pInputText id="email" formControlName="email" type="email" [maxLength]="255" />
+
+                    <app-validator [displayError]="isValidField('email', 'required')" errorMsg="E-mail é obrigatório" />
+
+                    <app-validator [displayError]="isValidField('email', 'email')" errorMsg="E-mail não é válido" />
+
+                </div>
+
+
+                <!-- Senha -->
+                <div>
+
+                    <label for="password">
+                        Senha
+
+                        @if (user === null) {
+                        <span class="text-red-500">*</span>
+                        }
+                    </label>
+
+                    <input pInputText id="password" formControlName="password" type="password" [maxLength]="255" />
+
+                    <app-validator [displayError]="isValidField('password', 'required')"
+                        errorMsg="Senha é obrigatória" />
+
+                </div>
+
+
+                <!-- Confirmar senha -->
+                <div>
+
+                    <label for="confirmPassword">
+                        Confirmar senha
+
+                        @if (user === null) {
+                        <span class="text-red-500">*</span>
+                        }
+                    </label>
+
+                    <input pInputText id="confirmPassword" formControlName="confirmPassword" type="password"
+                        [maxLength]="255" />
+
+                    <app-validator [displayError]="isValidField('confirmPassword', 'required')"
+                        errorMsg="Confirmar senha é obrigatório" />
+
+                    <app-validator [displayError]="isValidField('confirmPassword', 'mustMatch')"
+                        errorMsg="As senhas não coincidem" />
+
+                </div>
+
             </div>
 
-            <div>
-                <label for="email">E-mail <span class="text-red-500">*</span></label>
-                <input pInputText id="email" formControlName="email" type="email" [maxLength]="255" />
-                <app-validator [displayError]="isValidField('email', 'required')" errorMsg="E-mail é obrigatório" />
-                <app-validator [displayError]="isValidField('email', 'email')" errorMsg="E-mail não é válido" />
-            </div>
-
-            <div>
-                <label for="password">Senha @if (user === null) { <span class="text-red-500">*</span> } </label>
-                <input pInputText id="password" formControlName="password" type="password" [maxLength]="255" />
-                <app-validator [displayError]="isValidField('password', 'required')" errorMsg="Senha é obrigatório" />
-            </div>
-
-            <div>
-                <label for="confirmPassword">Confirmar senha @if (user === null) { <span class="text-red-500">*</span> }
-                </label>
-                <input pInputText id="confirmPassword" formControlName="confirmPassword" type="password"
-                    [maxLength]="255" />
-                <app-validator [displayError]="isValidField('confirmPassword', 'required')"
-                    errorMsg="Confirmar senha é obrigatório" />
-                <app-validator [displayError]="isValidField('confirmPassword', 'mustMatch')"
-                    errorMsg="As senhas não coincidem" />
-            </div>
-        </div>
+        </section>
 
     </p-fluid>
 
-    <div class="flex justify-end gap-2 mt-4">
+
+    <!-- ============================================================= -->
+    <!-- AÇÕES                                                          -->
+    <!-- ============================================================= -->
+
+    <div class="flex justify-end gap-2 mt-5 pt-4 border-t border-surface-200">
+
         <button pButton label="Salvar" type="button" (click)="onSave()">
         </button>
 

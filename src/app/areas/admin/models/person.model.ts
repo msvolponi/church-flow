@@ -8,7 +8,7 @@ export class PersonModel {
     id?: number;
     fullName: string = '';
     memberType: MemberType = MemberType.VISITOR;
-    gender: Gender = Gender.OTHER;
+    gender: Gender = Gender.MALE;
     birthDate: string = '';
     maritalStatus: MaritalStatus | '' = '';
     spouseId?: number;

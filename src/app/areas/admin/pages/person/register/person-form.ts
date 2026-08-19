@@ -3,9 +3,10 @@ import { PersonService } from '@/app/core/services/person.service';
 import { ApiErrorResponse } from '@/app/shared/dtos/api-error.response';
 import { PersonRequest } from '@/app/shared/dtos/person.request';
 import { PersonResponse } from '@/app/shared/dtos/person.response';
-import { GenderOptions } from '@/app/shared/enums/gender';
+import { Gender, GenderOptions } from '@/app/shared/enums/gender';
 import { MaritalStatusOptions } from '@/app/shared/enums/marital-status';
 import { MemberType, MemberTypeOptions } from '@/app/shared/enums/member-type';
+import { StateOptions } from '@/app/shared/enums/states';
 import { PersonMapper } from '@/app/shared/mappers/person.mapper';
 import { Validator } from "@/app/shared/pages/components/validator/validator";
 import { ValidatorService } from '@/app/shared/pages/components/validator/validator.service';
@@ -26,7 +27,16 @@ import { PersonModel } from '../../../models/person.model';
 @Component({
   selector: 'app-person-form',
   standalone: true,
-  imports: [ReactiveFormsModule, InputTextModule, SelectModule, TextareaModule, ButtonModule, FieldsetModule, FluidModule, InputMaskModule, Validator, CheckboxModule],
+  imports: [ReactiveFormsModule,
+    InputTextModule,
+    SelectModule,
+    TextareaModule,
+    ButtonModule,
+    FieldsetModule,
+    FluidModule,
+    InputMaskModule,
+    Validator,
+    CheckboxModule],
   templateUrl: './person-form.html',
   styleUrl: './person-form.scss',
 })
@@ -41,6 +51,7 @@ export class PersonForm implements OnInit {
   memberTypes = MemberTypeOptions.OPTIONS;
   genders = GenderOptions.OPTIONS;
   maritalStatuses = MaritalStatusOptions.OPTIONS;
+  states = StateOptions.OPTIONS;
 
   registerForm = new PersonModel();
   form: FormGroup;
@@ -53,7 +64,7 @@ export class PersonForm implements OnInit {
       id: [null],
       fullName: ['', Validators.required],
       memberType: [MemberType.VISITOR],
-      gender: [''],
+      gender: [Gender.MALE],
       birthDate: [''],
       maritalStatus: [''],
       spouseId: [null as number | null],
