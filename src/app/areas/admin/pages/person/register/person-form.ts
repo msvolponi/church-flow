@@ -168,9 +168,7 @@ export class PersonForm implements OnInit {
   loadPeople(): void {
     this.personService.list().subscribe({
       next: people => this.people.set(people.map(person => PersonMapper.toModel(person))),
-      error: () => this.toastMessageService.error(
-        'Erro ao carregar pessoas',
-        'Pessoas')
+      error: () => this.toastMessageService.error('Erro ao carregar pessoas', 'Pessoas')
     });
   }
 }

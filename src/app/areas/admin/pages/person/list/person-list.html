@@ -1,12 +1,17 @@
 <div class="card">
 
     <p-table #dt [value]="people()" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="id" sortField="fullName"
+        [globalFilterFields]="['fullName', 'email']"
         currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} membros" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 20, 30]">
 
         <ng-template pTemplate="caption">
             <div class="flex items-center justify-between">
                 <h5 class="m-0">Membros</h5>
+                <p-iconfield>
+                    <p-inputicon class="pi pi-search" />
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="nome, e-mail..." />
+                </p-iconfield>
             </div>
         </ng-template>
 
