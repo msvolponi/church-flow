@@ -1,0 +1,110 @@
+<div class="col-span-12 lg:col-span-6 xl:col-span-3" *ngFor="let c of summaryCards()">
+    <div class="card mb-0">
+        <div class="flex justify-between mb-4">
+            <div>
+                <span class="block text-muted-color font-medium mb-4">{{c.title}}</span>
+                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{c.value}}</div>
+            </div>
+            <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
+                <i [class]="c.icon + ' text-blue-500 text-xl!'"></i>
+            </div>
+        </div>
+        <span class="text-primary font-medium">{{c.description}}</span>
+    </div>
+</div>
+
+<div class="col-span-12 xl:col-span-8">
+    <div class="card">
+        <div class="flex items-center gap-3">
+            <i class="pi pi-gift text-primary-600 text-xl"></i>
+            <div class="text-2xl font-semibold leading-tight">Aniversariantes de {{monthName}}</div>
+        </div>
+
+        <p class="text-sm text-surface-500 leading-tight mt-1">Pessoas que fazem aniversário neste mês</p>
+        <div class="mt-3 border-b border-surface-200"></div>
+
+        <div class="mt-4">
+            <ng-container *ngIf="loading(); else list">
+                <div class="grid grid-cols-1 gap-3">
+                    <div *ngFor="let s of [1,2,3]" class="p-3 border rounded-border">
+                        <p-skeleton width="3rem" height="1.5rem"></p-skeleton>
+                        <p-skeleton width="100%" height="1rem" styleClass="mt-2"></p-skeleton>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #list>
+                <ng-container *ngIf="birthdays.length > 0; else empty">
+                    <div class="grid gap-3">
+                        <div *ngFor="let b of birthdays" class="p-3 border rounded-border flex items-start gap-4">
+                            <div class="w-12 text-center text-lg font-semibold dark:text-surface-0 text-surface-900">{{b.day | number:'2.0'}}</div>
+                            <div class="flex-1">
+                                <div class="font-medium">{{b.person.fullName}}</div>
+                                <div class="text-sm text-surface-500 mt-1 flex items-center justify-between">
+                                    <div>{{b.person.memberTypeLabel}}</div>
+                                    <div>{{b.age}} anos</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button pButton type="button" icon="pi pi-phone" class="p-button-text" *ngIf="b.person.cellphone" (click)="call(b.person.cellphone)"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-right">
+                        <button pButton type="button" label="Ver todos" class="p-button-text" (click)="viewAll()"></button>
+                    </div>
+                </ng-container>
+            </ng-template>
+
+            <ng-template #empty>
+                <div class="text-center py-6">
+                    <div class="text-3xl">🎂</div>
+                    <div class="mt-2 font-medium">Nenhum aniversariante neste mês.</div>
+                    <div class="text-sm text-surface-500 mt-1">Não há aniversários cadastrados para este período.</div>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<div class="col-span-12 xl:col-span-4">
+    <div class="card mb-4">
+        <div class="flex items-center gap-3">
+            <i class="pi pi-users text-primary-600 text-xl"></i>
+            <div class="text-2xl font-semibold leading-tight">Pessoas por tipo</div>
+        </div>
+        <p class="text-sm text-surface-500 leading-tight mt-1">Distribuição das pessoas cadastradas</p>
+        <div class="mt-3 border-b border-surface-200"></div>
+
+        <div class="mt-4 space-y-3">
+            <div *ngFor="let d of distribution" class="">
+                <div class="flex justify-between mb-1">
+                    <div class="text-sm">{{d.label}}</div>
+                    <div class="font-semibold">{{d.count}}</div>
+                </div>
+                <div class="w-full bg-surface-200 h-3 rounded-full overflow-hidden">
+                    <div [style.width.%]="d.percent" class="bg-primary-600 h-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="flex items-center gap-3">
+            <i class="pi pi-calendar text-primary-600 text-xl"></i>
+            <div class="text-2xl font-semibold leading-tight">Próximos aniversários</div>
+        </div>
+        <p class="text-sm text-surface-500 leading-tight mt-1">Próximos aniversários</p>
+        <div class="mt-3 border-b border-surface-200"></div>
+
+        <div class="mt-4 space-y-2">
+            <div *ngFor="let n of nextBirthdays" class="flex justify-between items-center">
+                <div>
+                    <div class="font-medium">{{n.person.fullName}}</div>
+                    <div class="text-sm text-surface-500">{{n.label}}</div>
+                </div>
+                <div class="text-sm text-surface-600">{{n.age}} anos</div>
+            </div>
+            <div *ngIf="nextBirthdays.length===0" class="text-sm text-surface-500">Nenhum aniversário próximo.</div>
+        </div>
+    </div>
+</div>

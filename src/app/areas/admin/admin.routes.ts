@@ -5,12 +5,14 @@ import { Admin } from './admin';
 import { AccountForm as AccountForm } from './pages/account/register/account-form';
 import { PersonPage } from './pages/person/person-page';
 import { AccountPage } from './pages/account/account-page';
+import { AdminDashboard } from './pages/dashboard/dashboard';
 
 export const adminRoutes: Routes = [
     {
         path: '',
         component: Admin,
         children: [
+            { path: 'dashboard', component: AdminDashboard },
             { path: 'person/list', component: PersonPage },
             { path: 'account/list', component: AccountPage, canActivate: [roleGuard([Role.ADMIN, Role.MANAGER])] }
         ]
