@@ -88,7 +88,6 @@ export class PersonList implements OnInit {
       acceptLabel: 'Sim',
       rejectLabel: 'Não',
       accept: () => {
-        debugger
         this.personService.delete(person.id!).subscribe({
           next: () => {
             this.people.update(list => list.filter(x => x.id !== person.id));

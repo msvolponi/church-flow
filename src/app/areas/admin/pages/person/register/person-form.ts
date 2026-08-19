@@ -133,6 +133,9 @@ export class PersonForm implements OnInit {
       case ErrorCode.NOT_FOUND:
         this.toastMessageService.error('Pessoa informada não foi encontrada.', 'Cadastro de pessoa');
         break;
+      case ErrorCode.BUSINESS_ERROR:
+        this.toastMessageService.error('Pessoa informada já possui um cônjuge.', 'Cadastro de pessoa');
+        break;
       default:
         this.toastMessageService.error('Ocorreu um erro ao salvar a pessoa.', 'Cadastro de pessoa');
         break;
