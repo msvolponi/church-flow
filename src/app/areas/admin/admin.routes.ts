@@ -7,6 +7,7 @@ import { PersonPage } from './pages/person/person-page';
 import { AccountPage } from './pages/account/account-page';
 import { AdminDashboard } from './pages/dashboard/dashboard';
 import { FollowUpPage } from './pages/follow-up/follow-up-page';
+import { FollowUpList } from './pages/follow-up/follow-up-list';
 
 export const adminRoutes: Routes = [
     {
@@ -14,6 +15,7 @@ export const adminRoutes: Routes = [
         component: Admin,
         children: [
             { path: 'dashboard', component: AdminDashboard },
+            { path: 'follow-up', component: FollowUpList },
             { path: 'person/:id/follow-ups', component: FollowUpPage },
             { path: 'person/list', component: PersonPage },
             { path: 'account/list', component: AccountPage, canActivate: [roleGuard([Role.ADMIN, Role.MANAGER])] }

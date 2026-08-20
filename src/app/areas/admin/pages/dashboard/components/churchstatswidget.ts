@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
+import { catchError, forkJoin, of } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
 
@@ -20,6 +21,8 @@ import { PersonMapper } from '@/app/shared/mappers/person.mapper';
 import { ToastMessageService } from '@/app/shared/services/toast-message.service';
 import { Router } from '@angular/router';
 import { AttentionItemModel } from '../../../models/attention-item.model';
+import { FollowUpResponse } from '@/app/shared/dtos/follow-up.response';
+import { FollowUpService } from '@/app/core/services/follow-up.service';
 
 @Component({
     standalone: true,
@@ -37,11 +40,14 @@ export class AdminChurchStatsWidget implements OnInit {
     distribution: { label: string; count: number; percent: number }[] = [];
     nextBirthdays: { person: PersonModel; label: string; age: number }[] = [];
     attentionItems: AttentionItemModel[] = [];
+    followUpSummary = signal({ pending: 0, upcoming: 0 });
+    followUpLoading = signal(true);
 
     monthName = formatMonthPt(getCurrentMonthIndex());
 
     constructor(
         private personService: PersonService,
+        private followUpService: FollowUpService,
         private toastMessageService: ToastMessageService,
         private router: Router
     ) { }
@@ -57,6 +63,7 @@ export class AdminChurchStatsWidget implements OnInit {
                 const list = peopleResp.map(p => PersonMapper.toModel(p));
                 this.people.set(list);
                 this.process(list);
+                this.loadFollowUpSummary(list);
                 this.loading.set(false);
             },
             error: () => {
@@ -135,11 +142,59 @@ export class AdminChurchStatsWidget implements OnInit {
         this.nextBirthdays = next;
     }
 
+    private loadFollowUpSummary(list: PersonModel[]): void {
+        this.followUpLoading.set(true);
+        if (list.length === 0) {
+            this.followUpSummary.set({ pending: 0, upcoming: 0 });
+            this.followUpLoading.set(false);
+            return;
+        }
+
+        forkJoin(list.map(person => this.followUpService.listByPerson(person.id!).pipe(catchError(() => of([] as FollowUpResponse[]))))).subscribe({
+            next: followUpsByPerson => {
+                const followUps = followUpsByPerson.flat();
+                const today = this.startOfToday();
+                const nextWeek = new Date(today);
+                nextWeek.setDate(nextWeek.getDate() + 7);
+
+                const pending = followUps.filter(item => item.requiresFollowUp && !!item.nextFollowUpDate && this.parseDate(item.nextFollowUpDate) < today).length;
+                const upcoming = followUps.filter(item => {
+                    if (!item.requiresFollowUp || !item.nextFollowUpDate) {
+                        return false;
+                    }
+                    const nextDate = this.parseDate(item.nextFollowUpDate);
+                    return nextDate >= today && nextDate <= nextWeek;
+                }).length;
+
+                this.followUpSummary.set({ pending, upcoming });
+                this.followUpLoading.set(false);
+            },
+            error: () => {
+                this.followUpSummary.set({ pending: 0, upcoming: 0 });
+                this.followUpLoading.set(false);
+            }
+        });
+    }
+
+    private parseDate(value: string): Date {
+        const [year, month, day] = value.slice(0, 10).split('-').map(Number);
+        return new Date(year, month - 1, day);
+    }
+
+    private startOfToday(): Date {
+        const today = new Date();
+        return new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    }
+
     call(phone: string): void {
         try { window.location.href = `tel:${phone}`; } catch { }
     }
 
     viewAll(): void {
         this.router.navigate(['/admin/person/list']);
+    }
+
+    viewFollowUps(): void {
+        this.router.navigate(['/admin/follow-up']);
     }
 }

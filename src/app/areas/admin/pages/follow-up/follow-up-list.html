@@ -1,0 +1,68 @@
+<div class="card !mb-4">
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+            <div class="flex items-center gap-3">
+                <span class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-600">
+                    <i class="pi pi-heart text-2xl"></i>
+                </span>
+                <div>
+                    <h1 class="text-3xl font-semibold m-0">Acompanhamentos</h1>
+                    <p class="text-surface-500 mt-1 mb-0">Pessoas que precisam de atenção pastoral</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-tabs [value]="activeTab()" (valueChange)="setTab($event)">
+    <p-tablist>
+        <p-tab value="0">Pendentes ({{tabCount('0')}})</p-tab>
+        <p-tab value="1">Próximos ({{tabCount('1')}})</p-tab>
+        <p-tab value="2">Histórico ({{tabCount('2')}})</p-tab>
+    </p-tablist>
+</p-tabs>
+
+<ng-container *ngIf="loading(); else content">
+    <div class="grid gap-3 mt-4">
+        <div *ngFor="let item of [1, 2, 3]" class="card !mb-0">
+            <p-skeleton width="14rem" height="1.5rem"></p-skeleton>
+            <p-skeleton width="8rem" height="1rem" styleClass="mt-3"></p-skeleton>
+            <p-skeleton width="11rem" height="1rem" styleClass="mt-2"></p-skeleton>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #content>
+    <ng-container *ngIf="visibleFollowUps().length > 0; else emptyState">
+        <div class="grid gap-3 mt-4">
+            <article *ngFor="let followUp of visibleFollowUps()" class="card !mb-0">
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                    <div class="min-w-0">
+                        <div class="text-xl font-semibold break-words">{{followUp.personName}}</div>
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-surface-500 mt-3">
+                            <span class="flex items-center gap-2"><i [class]="typeIcon(followUp.type)"></i>{{followUp.typeLabel}}</span>
+                            <span class="flex items-center gap-2"><i class="pi pi-calendar"></i>{{formatDate(followUp.date)}}</span>
+                            <span class="flex items-center gap-2"><i class="pi pi-user"></i>Responsável: {{followUp.responsibleName}}</span>
+                        </div>
+                        <div *ngIf="followUp.location" class="flex items-center gap-2 text-sm text-surface-500 mt-3">
+                            <i class="pi pi-map-marker"></i>{{followUp.location}}
+                        </div>
+                        <div *ngIf="followUp.nextFollowUpDate" class="flex items-center gap-2 text-sm text-primary-600 mt-3">
+                            <i class="pi pi-calendar-plus"></i>Próximo acompanhamento: {{formatDate(followUp.nextFollowUpDate)}}
+                        </div>
+                    </div>
+                    <button pButton type="button" label="Ver acompanhamento" icon="pi pi-arrow-right" iconPos="right"
+                        class="p-button-text w-full sm:w-auto shrink-0" (click)="openFollowUp(followUp)"></button>
+                </div>
+            </article>
+        </div>
+    </ng-container>
+</ng-template>
+
+<ng-template #emptyState>
+    <div class="card !mb-0 text-center py-12 mt-4">
+        <i class="pi pi-heart text-primary-600 text-4xl"></i>
+        <div class="text-xl font-semibold mt-4">Nenhum acompanhamento nesta categoria.</div>
+        <div class="text-surface-500 mt-2">Os acompanhamentos aparecerão aqui quando houver registros.</div>
+    </div>
+</ng-template>

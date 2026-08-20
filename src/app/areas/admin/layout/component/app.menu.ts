@@ -70,7 +70,7 @@ export class AppMenu {
                     {
                         label: 'Acompanhamentos',
                         icon: 'pi pi-fw pi-comments',
-                        routerLink: ['/admin/person/list']
+                        routerLink: ['/admin/follow-up']
                     }
                 ]
             },
