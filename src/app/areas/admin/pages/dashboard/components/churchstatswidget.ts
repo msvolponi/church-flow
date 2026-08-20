@@ -1,24 +1,25 @@
-import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
 
-import { PersonService } from '@/app/core/services/person.service';
-import { PersonMapper } from '@/app/shared/mappers/person.mapper';
 import { PersonModel } from '@/app/areas/admin/models/person.model';
-import { ToastMessageService } from '@/app/shared/services/toast-message.service';
-import { Router } from '@angular/router';
+import { PersonService } from '@/app/core/services/person.service';
 import { MemberTypeOptions } from '@/app/shared/enums/member-type';
 import {
     calculateAge,
-    isBirthdayThisMonth,
-    isBirthdayToday,
-    getNextBirthdayDate,
     daysUntil,
     formatMonthPt,
     getCurrentMonthIndex,
+    getNextBirthdayDate,
+    isBirthdayThisMonth,
+    isBirthdayToday,
     isNewMemberThisMonth
 } from '@/app/shared/helpers/date.helper';
+import { PersonMapper } from '@/app/shared/mappers/person.mapper';
+import { ToastMessageService } from '@/app/shared/services/toast-message.service';
+import { Router } from '@angular/router';
+import { AttentionItemModel } from '../../../models/attention-item.model';
 
 @Component({
     standalone: true,
@@ -35,6 +36,7 @@ export class AdminChurchStatsWidget implements OnInit {
     birthdays: { person: PersonModel; day: number; age: number; isToday: boolean }[] = [];
     distribution: { label: string; count: number; percent: number }[] = [];
     nextBirthdays: { person: PersonModel; label: string; age: number }[] = [];
+    attentionItems: AttentionItemModel[] = [];
 
     monthName = formatMonthPt(getCurrentMonthIndex());
 
@@ -76,6 +78,35 @@ export class AdminChurchStatsWidget implements OnInit {
             { title: 'Batizados', value: baptized, description: 'Batizados nas águas', icon: 'pi pi-heart' },
             { title: 'Novos este mês', value: newThisMonth, description: 'Novos este mês', icon: 'pi pi-user-plus' }
         ]);
+
+        this.attentionItems = [
+            {
+                label: 'pessoas sem telefone',
+                count: list.filter(p => !p.cellphone?.trim() && !p.phone?.trim()).length,
+                icon: 'pi pi-phone',
+                filter: 'missing-phone'
+            },
+            {
+                label: 'pessoas sem data de nascimento',
+                count: list.filter(p => !p.birthDate?.trim()).length,
+                icon: 'pi pi-calendar',
+                filter: 'missing-birth-date'
+            },
+            {
+                label: 'pessoas sem e-mail',
+                count: list.filter(p => !p.email?.trim()).length,
+                icon: 'pi pi-envelope',
+                filter: 'missing-email'
+            },
+            {
+                label: 'pessoas não batizadas',
+                count: list.filter(p => p.baptizedInWater === false).length,
+                icon: 'pi pi-heart',
+                filter: 'not-baptized'
+            }
+        ]
+            .filter(item => item.count > 0)
+            .sort((a, b) => b.count - a.count);
 
         this.birthdays = birthdaysThisMonth
             .map(p => ({ person: p, day: (p.birthDate ? Number(p.birthDate.split('-')[2]) : 0), age: calculateAge(p.birthDate) || 0, isToday: isBirthdayToday(p.birthDate) }))
