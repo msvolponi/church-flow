@@ -65,6 +65,10 @@
                             <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (click)="onEdit(person)">
                             </p-button>
 
+                            <p-button icon="pi pi-heart" [rounded]="true" [outlined]="true" pTooltip="Acompanhar pessoa"
+                                (click)="onFollowUp(person)">
+                            </p-button>
+
                             <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"
                                 (click)="onDelete(person)">
                             </p-button>
@@ -84,6 +88,10 @@
                 <td class="hidden md:table-cell">
                     <div class="flex justify-end gap-2">
                         <p-button icon="pi pi-pencil" [rounded]="true" [outlined]="true" (click)="onEdit(person)">
+                        </p-button>
+
+                        <p-button icon="pi pi-heart" [rounded]="true" [outlined]="true" pTooltip="Acompanhar pessoa"
+                            (click)="onFollowUp(person)">
                         </p-button>
 
                         <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"

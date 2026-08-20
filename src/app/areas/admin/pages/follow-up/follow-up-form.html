@@ -1,0 +1,73 @@
+<form [formGroup]="form" (ngSubmit)="onSave()">
+    <p-fluid>
+        <div class="mb-5 p-3 bg-primary-50 dark:bg-primary-900/20 rounded-border">
+            <div class="text-sm text-surface-500">Pessoa acompanhada</div>
+            <div class="font-semibold mt-1">{{personName}}</div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2">
+            <div>
+                <label for="responsibleId">Responsável <span class="text-red-500">*</span></label>
+                <p-select id="responsibleId" formControlName="responsibleId" [options]="people" optionLabel="fullName"
+                    optionValue="id" [filter]="true" filterBy="fullName" [showClear]="true"
+                    placeholder="Selecione o responsável" class="w-full">
+                    <ng-template #item let-person>
+                        <div>
+                            <div class="font-medium">{{person.fullName}}</div>
+                            <div class="text-sm text-surface-500">{{person.memberTypeLabel}}</div>
+                        </div>
+                    </ng-template>
+                </p-select>
+                <app-validator [displayError]="isValidField('responsibleId', 'required')" errorMsg="Responsável é obrigatório" />
+            </div>
+
+            <div>
+                <label for="date">Data <span class="text-red-500">*</span></label>
+                <input pInputText id="date" formControlName="date" type="date" />
+                <app-validator [displayError]="isValidField('date', 'required')" errorMsg="Data é obrigatória" />
+            </div>
+
+            <div>
+                <label for="type">Tipo <span class="text-red-500">*</span></label>
+                <p-select id="type" formControlName="type" [options]="types" optionLabel="label" optionValue="value"
+                    class="w-full" placeholder="Selecione o tipo"></p-select>
+                <app-validator [displayError]="isValidField('type', 'required')" errorMsg="Tipo é obrigatório" />
+            </div>
+
+            <div>
+                <label for="reason">Motivo <span class="text-red-500">*</span></label>
+                <p-select id="reason" formControlName="reason" [options]="reasons" optionLabel="label" optionValue="value"
+                    class="w-full" placeholder="Selecione o motivo"></p-select>
+                <app-validator [displayError]="isValidField('reason', 'required')" errorMsg="Motivo é obrigatório" />
+            </div>
+
+            <div class="md:col-span-2">
+                <label for="location">Local</label>
+                <input pInputText id="location" formControlName="location" [maxLength]="255"
+                    placeholder="Ex.: Hospital, casa ou igreja" />
+            </div>
+
+            <div class="md:col-span-2">
+                <label for="description">Comentários <span class="text-red-500">*</span></label>
+                <textarea pTextarea id="description" formControlName="description" rows="5"
+                    placeholder="Descreva o acompanhamento realizado..."></textarea>
+                <app-validator [displayError]="isValidField('description', 'required')" errorMsg="Comentários são obrigatórios" />
+            </div>
+
+            <div class="md:col-span-2 flex items-center gap-2">
+                <p-checkbox inputId="requiresFollowUp" formControlName="requiresFollowUp" [binary]="true"></p-checkbox>
+                <label for="requiresFollowUp">Requer novo acompanhamento</label>
+            </div>
+
+            <div>
+                <label for="nextFollowUpDate">Próximo acompanhamento <span *ngIf="form.get('requiresFollowUp')?.value" class="text-red-500">*</span></label>
+                <input pInputText id="nextFollowUpDate" formControlName="nextFollowUpDate" type="date" />
+                <app-validator [displayError]="isValidField('nextFollowUpDate', 'required')" errorMsg="Próxima data é obrigatória" />
+            </div>
+        </div>
+    </p-fluid>
+
+    <div class="flex justify-end mt-5 pt-4 border-t border-surface-200">
+        <button pButton type="submit" label="Salvar" icon="pi pi-check"></button>
+    </div>
+</form>

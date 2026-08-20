@@ -7,14 +7,17 @@ import {
     HttpRequest
 } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, catchError, switchMap, throwError } from 'rxjs';
+import { Observable, catchError, finalize, shareReplay, switchMap, tap, throwError } from 'rxjs';
 
 import { ApiErrorResponse } from '@/app/shared/dtos/api-error.response';
 import { ToastMessageService } from '@/app/shared/services/toast-message.service';
 import { AuthService } from '../services/auth.service';
+import { LoginResponse } from '@/app/shared/dtos/login.response';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
+
+    private refreshInProgress$: Observable<LoginResponse> | null = null;
 
     constructor(
         private readonly toastMessageService: ToastMessageService,
@@ -32,18 +35,20 @@ export class ErrorInterceptor implements HttpInterceptor {
                 const error = err.error as ApiErrorResponse;
 
                 if (err.status === 401 && !req.url.includes('/auth/refresh') && !req.url.includes('/auth/login') && this.authService.hasRefreshToken()) {
-                    return this.authService.refreshSession().pipe(
-                        switchMap((response) => {
-                            this.authService.saveToken(response, this.authService.isRemembered());
+                    if (!this.refreshInProgress$) {
+                        this.refreshInProgress$ = this.authService.refreshSession().pipe(
+                            tap(response => this.authService.saveToken(response, this.authService.isRemembered())),
+                            finalize(() => this.refreshInProgress$ = null),
+                            shareReplay({ bufferSize: 1, refCount: false })
+                        );
+                    }
 
-                            const authReq = req.clone({
-                                setHeaders: {
-                                    Authorization: `${response.type || 'Bearer'} ${response.token}`
-                                }
-                            });
-
-                            return next.handle(authReq);
-                        }),
+                    return this.refreshInProgress$.pipe(
+                        switchMap(response => next.handle(req.clone({
+                            setHeaders: {
+                                Authorization: `${response.type || 'Bearer'} ${response.token}`
+                            }
+                        }))),
                         catchError(() => {
                             this.authService.logout();
                             this.router.navigate(['/login']);

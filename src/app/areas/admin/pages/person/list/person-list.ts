@@ -22,6 +22,8 @@ import { RippleModule } from 'primeng/ripple';
 import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
+import { TooltipModule } from 'primeng/tooltip';
+import { Router } from '@angular/router';
 import { PersonModel } from '../../../models/person.model';
 
 @Component({
@@ -44,7 +46,8 @@ import { PersonModel } from '../../../models/person.model';
     TagModule,
     InputIconModule,
     IconFieldModule,
-    ConfirmDialogModule],
+    ConfirmDialogModule,
+    TooltipModule],
   providers: [ConfirmationService],
   templateUrl: './person-list.html',
   styleUrl: './person-list.scss',
@@ -59,7 +62,8 @@ export class PersonList implements OnInit {
   constructor(
     private personService: PersonService,
     private toastMessageService: ToastMessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private router: Router
   ) { }
 
 
@@ -78,6 +82,10 @@ export class PersonList implements OnInit {
 
   onEdit(member: PersonModel): void {
     this.edit.emit(member);
+  }
+
+  onFollowUp(person: PersonModel): void {
+    this.router.navigate(['/admin/person', person.id, 'follow-ups']);
   }
 
   onDelete(person: PersonModel): void {
